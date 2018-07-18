@@ -18,9 +18,9 @@ deviceRouter.get('/', function(req, res) {
     DeviceController.getAll(id)
       .then( (device) => {
         // Si la methode ne renvoie pas d'erreur, on renvoie le résultat
-        res.status(201).json({
+        res.status(200).json({
             success : true,
-            status : 201,
+            status : 200,
             datas : device
         });
       })
@@ -47,9 +47,9 @@ deviceRouter.post('/', function(req, res) {
     DeviceController.add()
       .then( (device) => {
         // Si la methode ne renvoie pas d'erreur, on renvoie le résultat
-        res.status(201).json({
+        res.status(200).json({
             success : true,
-            status : 201,
+            status : 200,
             datas : device
         });
     }).catch( (err) => {
@@ -85,9 +85,9 @@ deviceRouter.delete('/:id', function (req, res) {
     if (device) {
       DeviceController.delete(id)
         .then( device => {
-          res.status(201).json({
+          res.status(200).json({
               success : true,
-              status : 201,
+              status : 200,
               message : "Device deleted"
           });
         });

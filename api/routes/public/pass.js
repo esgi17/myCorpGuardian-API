@@ -20,7 +20,7 @@ passRouter.get('/', function(req, res) {
     const id = req.body.id;
     PassController.getAll(id)
       .then( (pass) => {
-          res.status(201).json(pass);
+          res.status(200).json(pass);
       })
       .catch( (err) => {
           console.error(err);
@@ -45,7 +45,7 @@ passRouter.post('/', function(req, res) {
     }
     PassController.add(user_id)
       .then( (pass) => {
-          res.status(201).json(pass);
+          res.status(200).json(pass);
       })
       .catch( (err) => {
           console.error(err);

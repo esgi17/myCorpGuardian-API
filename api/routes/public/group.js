@@ -40,7 +40,7 @@ groupRouter.post('/', function(req, res) {
     }
     GroupController.add(description)
       .then( (group) => {
-          res.status(201).json(group);
+          res.status(200).json(group);
       })
       .catch( (err) => {
           console.error(err);

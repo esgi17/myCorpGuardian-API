@@ -18,9 +18,9 @@ deviceTypeRouter.get('/', function(req, res) {
     DeviceTypeController.getAll(id)
       .then( (deviceType) => {
         // Si la methode ne renvoie pas d'erreur, on renvoie le résultat
-        res.status(201).json({
+        res.status(200).json({
             success : true,
-            status : 201,
+            status : 200,
             datas : deviceType
         });
       })
@@ -95,7 +95,7 @@ deviceTypeRouter.delete('/:id', function (req, res) {
     if (deviceType) {
       DeviceTypeController.delete(id)
         .then( deviceType => {
-          res.status(201).json({
+          res.status(200).json({
               success : true,
               status : 201,
               message : "DeviceType deleted"

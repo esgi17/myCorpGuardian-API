@@ -18,9 +18,9 @@ scheduleRouter.get('/', function(req, res) {
     ScheduleController.getAll(id)
       .then( (schedule) => {
         // Si la methode ne renvoie pas d'erreur, on renvoie le résultat
-        res.status(201).json({
+        res.status(200).json({
             success : true,
-            status : 201,
+            status : 200,
             datas : schedule
         });
       })
@@ -61,9 +61,9 @@ scheduleRouter.post('/', function(req, res) {
     ScheduleController.add( h_start, h_stop, day, door_id, group_id )
       .then( (schedule) => {
         // Si la methode ne renvoie pas d'erreur, on renvoie le résultat
-        res.status(201).json({
+        res.status(200).json({
             success : true,
-            status : 201,
+            status : 200,
             datas : schedule
         });
     }).catch( (err) => {
@@ -99,9 +99,9 @@ scheduleRouter.delete('/:id', function (req, res) {
     if (schedule) {
       ScheduleController.delete(id)
         .then( schedule => {
-          res.status(201).json({
+          res.status(200).json({
               success : true,
-              status : 201,
+              status : 200,
               message : "Schedule deleted"
           });
         });

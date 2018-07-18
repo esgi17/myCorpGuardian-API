@@ -22,9 +22,9 @@ userRouter.get('/:id?', function(req, res) {
     UserController.getAll(id)
       .then( (user) => {
           // Si la méthode ne renvoie pas d'erreur, on renvoie le resultat
-          res.status(201).json({
+          res.status(200).json({
               success : true,
-              status : 201,
+              status : 200,
               datas : user
           });
       })
@@ -71,7 +71,7 @@ userRouter.post('/', function(req, res) {
           // Si la methode ne renvoie pas d'erreur, on renvoie le résultat
           res.status(200).json({
               success : true,
-              status : 201,
+              status : 200,
               datas : user
           });
       }).catch( (err) => {

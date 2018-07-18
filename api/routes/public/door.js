@@ -18,9 +18,9 @@ doorRouter.get('/', function(req, res) {
     DoorController.getAll(id)
       .then( (door) => {
         // Si la methode ne renvoie pas d'erreur, on renvoie le résultat
-        res.status(201).json({
+        res.status(200).json({
             success : true,
-            status : 201,
+            status : 200,
             datas : door
         });
       })
@@ -49,18 +49,18 @@ doorRouter.post('/', function(req, res) {
 
     if( ip === undefined || type === undefined ) {
       // Renvoi d'une erreur
-      res.status(400).json({
-          success : false,
-          status : 400,
-          message : "Bad Request"
-      }).end();
+        res.status(400).json({
+            success : false,
+            status : 400,
+            message : "Bad Request"
+        }).end();
     }
     DoorController.add( ip, name, ref )
       .then( (door) => {
         // Si la methode ne renvoie pas d'erreur, on renvoie le résultat
-        res.status(201).json({
+        res.status(200).json({
             success : true,
-            status : 201,
+            status : 200,
             datas : door
         });
     }).catch( (err) => {
@@ -96,11 +96,11 @@ doorRouter.delete('/:id', function (req, res) {
     if (door) {
       DoorController.delete(id)
         .then( door => {
-          res.status(201).json({
-              success : true,
-              status : 201,
-              message : "Door deleted"
-          });
+            res.status(200).json({
+                success : true,
+                status : 200,
+                message : "Door deleted"
+            });
         });
     } else {
       res.status(400).json({

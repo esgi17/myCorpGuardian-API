@@ -8,7 +8,6 @@ RouteManager.attach = function(app) {
     controlsRouteManger.attach(app);
     publicRouteManager.attach(app);
     generalRouteManger.attach(app);
-
 }
 
 module.exports = RouteManager;

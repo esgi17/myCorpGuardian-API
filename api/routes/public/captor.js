@@ -18,11 +18,11 @@ captorRouter.get('/', function(req, res) {
     CaptorController.getAll(id)
       .then( (captor) => {
         // Si la methode ne renvoie pas d'erreur, on renvoie le résultat
-        res.status(201).json({
-            success : true,
-            status : 201,
-            datas : captor
-        });
+          res.status(200).json({
+              success : true,
+              status : 201,
+              datas : captor
+          });
       })
       .catch( (err) => {
           console.error(err);
@@ -49,22 +49,23 @@ captorRouter.post('/', function(req, res) {
     const description = req.body.description;
 
     if( ip === undefined || type === undefined ) {
-      // Renvoi d'une erreur
-      res.status(400).json({
-          success : false,
-          status : 400,
-          message : "Bad Request"
-      }).end();
+        // Renvoi d'une erreur
+        res.status(400).json({
+            success : false,
+            status : 400,
+            message : "Bad Request"
+        }).end();
     }
     CaptorController.add( ip, type, description )
       .then( (captor) => {
         // Si la methode ne renvoie pas d'erreur, on renvoie le résultat
-        res.status(201).json({
+        res.status(200).json({
             success : true,
             status : 201,
             datas : captor
         });
-    }).catch( (err) => {
+      })
+      .catch( (err) => {
         // Sinon, on renvoie un erreur systeme
         console.error(err);
         res.status(500).json({
@@ -104,11 +105,11 @@ captorRouter.delete('/:id', function (req, res) {
           });
         });
     } else {
-      res.status(400).json({
-          success : false,
-          status : 400,
-          message : "Captor not found"
-      }).end();
+        res.status(400).json({
+            success : false,
+            status : 400,
+            message : "Captor not found"
+        }).end();
     }
     }).catch( (err) => {
         console.error(err);

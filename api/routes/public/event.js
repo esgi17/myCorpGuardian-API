@@ -18,9 +18,9 @@ eventRouter.get('/', function(req, res) {
     EventController.getAll(id)
       .then( (event) => {
         // Si la methode ne renvoie pas d'erreur, on renvoie le résultat
-        res.status(201).json({
+        res.status(200).json({
             success : true,
-            status : 201,
+            status : 200,
             datas : event
         });
       })
@@ -58,9 +58,9 @@ eventRouter.post('/', function(req, res) {
     EventController.add( date, data )
       .then( (event) => {
         // Si la methode ne renvoie pas d'erreur, on renvoie le résultat
-        res.status(201).json({
+        res.status(200).json({
             success : true,
-            status : 201,
+            status : 200,
             datas : event
         });
     }).catch( (err) => {
@@ -96,9 +96,9 @@ eventRouter.delete('/:id', function (req, res) {
     if (event) {
       EventController.delete(id)
         .then( event => {
-          res.status(201).json({
+          res.status(200).json({
               success : true,
-              status : 201,
+              status : 200,
               message : "Event deleted"
           });
         });
