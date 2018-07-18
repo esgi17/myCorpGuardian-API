@@ -6,6 +6,22 @@ const Op = ModelIndex.sequelize.Op;
 
 const DoorController = function() { };
 
+/**
+*  Récupération des élements en base
+**/
+DoorController.getAll = function (id) {
+      const options = {};
+      const where = {};
+
+      if( id !== undefined ) {
+          where.id = {
+              [Op.eq] : `${id}`
+          };
+      }
+      options.where = where;
+      return Door.findAll(options);
+  };
+
 
 /**
 *  Retrouver une porte en base

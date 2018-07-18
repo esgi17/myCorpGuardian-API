@@ -50,7 +50,7 @@ scheduleRouter.post('/', function(req, res) {
   const door_id = req.body.door_id;
   const group_id = req.body.group_id;
 
-    if( ip === undefined || type === undefined ) {
+    if( h_start === undefined || h_stop === undefined || day === undefined) {
       // Renvoi d'une erreur
       res.status(400).json({
           success : false,

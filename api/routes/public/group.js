@@ -11,8 +11,8 @@ groupRouter.use(bodyParser.json());
 * @method : get
 * @route : /group/
 */
-groupRouter.get('/', function(req, res) {
-    const id = req.body.id;
+groupRouter.get('/:id?', function(req, res) {
+    const id = req.params.id;
     GroupController.getAll( id )
       .then( (group) => {
         res.status(200).json({
