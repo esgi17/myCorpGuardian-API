@@ -1,125 +1,81 @@
-const express = require('express');
-const bodyParser = require('body-parser');
 const publicConfig = require('./config');
-const EventController = require(publicConfig.controllers.event_path);
+const ModelIndex = require(publicConfig.models_path);
+const Event = ModelIndex.Event;
 
-const eventRouter = express.Router();
-eventRouter.use(bodyParser.json());
+const Op = ModelIndex.sequelize.Op;
 
-/**
-* @api {get} /Event GET Event
-* @apiGroup event
-* @apiUse searchById
-* @apiUse eventCreated
-* @apiUse error500
-*/
-eventRouter.get('/:id?', function(req, res) {
-    var idEvent = req.params.id;
-    var idPass = req.query.id_pass;
-    var idDevice = req.query.id_device;
-    EventController.getAll(idEvent, idPass, idDevice)
-      .then( (event) => {
-        // Si la methode ne renvoie pas d'erreur, on renvoie le résultat
-        res.status(200).json({
-            success : true,
-            status : 200,
-            datas : event
-        });
-      })
-      .catch( (err) => {
-          console.error(err);
-          res.status(500).json({
-              success : false,
-              status : 500,
-              message : "500 Internal Server Error"
-          }).end();
-      });
-});
+const EventController = function() { };
 
 /**
-* @api {post} /Event ADD Event
-* @apiGroup event
-* @apiUse eventExample
-* @apiUse eventCreated
-* @apiUse error500
-* @apiUse error404
-* @apiUse error400
-*/
-eventRouter.post('/', function(req, res) {
-    const date = req.body.date;
-    const data = req.body.data;
-
-    if( date === undefined || data === undefined ) {
-      // Renvoi d'une erreur
-      res.status(400).json({
-          success : false,
-          status : 400,
-          message : "Bad Request"
-      }).end();
-    }
-    EventController.add( date, data )
-      .then( (event) => {
-        // Si la methode ne renvoie pas d'erreur, on renvoie le résultat
-        res.status(200).json({
-            success : true,
-            status : 200,
-            datas : event
-        });
-    }).catch( (err) => {
-        // Sinon, on renvoie un erreur systeme
-        console.error(err);
-        res.status(500).json({
-            success : false,
-            status : 500,
-            message : "500 Internal Server Error"
-        }).end();
+*  Creation d'un Event en base
+**/
+EventController.add = function( date, data, device_id ) {
+    return Event.create({
+        date: date,
+        data: data,
+        device_id: device_id
     });
-});
+};
 
 /**
-* @api {delete} /event DELETE Event
-* @apiGroup event
-* @apiUse searchById
-* @apiSuccessExample
-*    HTTP/1.1 200 Event deleted
-*     {
-*       "success" : true
-*       "status": 200
-*       "message": "Event deleted"
-*     }
-* @apiUse error500
-* @apiUse error404
-* @apiUse error400
-*/
-eventRouter.delete('/:id', function (req, res) {
-  var id = parseInt(req.params.id);
-  EventController.find(id)
-  .then( (event) => {
-    if (event) {
-      EventController.delete(id)
-        .then( event => {
-          res.status(200).json({
-              success : true,
-              status : 200,
-              message : "Event deleted"
-          });
-        });
-    } else {
-      res.status(400).json({
-          success : false,
-          status : 400,
-          message : "Event not found"
-      }).end();
+* Suppression d'un Event en base
+**/
+EventController.delete = function(id) {
+  return Event.destroy({
+    where: {
+      id : id
     }
-    }).catch( (err) => {
-        console.error(err);
-        res.status(500).json({
-            success : false,
-            status : 500,
-            message : "500 Internal Server Error"
-        }).end();
+  });
+}
+
+/**
+*  Modification d'un Event en base
+**/
+EventController.update = function( id, date, data, device_id ) {
+    return Event.update({
+      date: date,
+      data: data,
+      device_id: device_id
+    },{
+      where: {
+        id : id
+      }
     });
-});
+};
+
+/**
+*  Récupération des élements en base
+**/
+EventController.getAll = function (idEvent, idPass, idDevice) {
+    const options = {
+      include: [{
+        model: ModelIndex.Device,
+        as : 'device'
+      }]
+    };
+    const where = {};
+
+    if( idEvent !== undefined ) {
+        where.id = {
+            [Op.eq] : `${id}`
+        };
+    }
+
+    if( idPass !== undefined ) {
+        where.pass_id = {
+            [Op.eq] : `${idPass}`
+        }
+    }
+
+    if( idDevice !== undefined ) {
+        where.device_id = {
+            [Op.eq] : `${idDevice}`
+        }
+    }
+    options.where = where;
+    return Event.findAll(options);
+};
 
 
-module.exports = eventRouter;
+// Export du controller
+module.exports = EventController;

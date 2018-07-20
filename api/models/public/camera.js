@@ -23,8 +23,8 @@ module.exports = function (sequelize, DataTypes) {
         underscored: true,
         freezeTableName: true
     });
-    Door.associate = _associate;
-    return Door;
+    Camera.associate = _associate;
+    return Camera;
 }
 
 // INTERNAL
