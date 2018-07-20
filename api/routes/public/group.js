@@ -33,12 +33,12 @@ groupRouter.get('/:id?', function(req, res) {
 * @route : /user/
 */
 groupRouter.post('/', function(req, res) {
-    const description = req.body.description;
-    if( description === undefined ) {
+    const name = req.body.name;
+    if( name === undefined ) {
         res.status(400).end();
         return;
     }
-    GroupController.add(description)
+    GroupController.add(name)
       .then( (group) => {
           res.status(200).json(group);
       })

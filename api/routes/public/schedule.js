@@ -13,8 +13,8 @@ scheduleRouter.use(bodyParser.json());
 * @apiUse scheduleCreated
 * @apiUse error500
 */
-scheduleRouter.get('/', function(req, res) {
-    const id = req.body.id;
+scheduleRouter.get('/:id?', function(req, res) {
+    const id = req.params.id;
     ScheduleController.getAll(id)
       .then( (schedule) => {
         // Si la methode ne renvoie pas d'erreur, on renvoie le résultat
@@ -94,7 +94,7 @@ scheduleRouter.post('/', function(req, res) {
 */
 scheduleRouter.delete('/:id', function (req, res) {
   var id = parseInt(req.params.id);
-  ScheduleController.find(id)
+  ScheduleController.getAll(id)
   .then( (schedule) => {
     if (schedule) {
       ScheduleController.delete(id)

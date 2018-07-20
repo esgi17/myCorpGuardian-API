@@ -146,10 +146,8 @@ userRouter.delete('/', function (req, res) {
 * @apiUse error400
 */
 userRouter.put('/', function(req, res) {
-  console.log("yo");
-  const name = req.body.firstname;
-  const surname = req.body.lastname;
-  const login = req.body.login;
+  const firstname = req.body.firstname;
+  const lastname = req.body.lastname;
   const job = req.body.job || "host";
   const group_id = req.body.group_id || 0;
   const id = parseInt(req.body.id);
@@ -157,7 +155,7 @@ userRouter.put('/', function(req, res) {
   UserController.getAll(id)
     .then( (user) => {
       if (user) {
-          UserController.update(id, firstname, lastname, login, job, group_id)
+          UserController.update(id, firstname, lastname, job, group_id)
             .then( (user) => {
                 res.status(200).json({
                     success : true,
