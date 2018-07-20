@@ -16,8 +16,8 @@ passRouter.use(bodyParser.json());
 * @apiUse error500
 * @apiUse error404
 */
-passRouter.get('/', function(req, res) {
-    const id = req.body.id;
+passRouter.get('/:id', function(req, res) {
+    const id = req.params.id;
     PassController.getAll(id)
       .then( (pass) => {
           res.status(200).json(pass);
@@ -95,7 +95,7 @@ passRouter.delete('/:id', function (req, res) {
 * @apiUse error404
 * @apiUse error400
 */
-passRouter.patch('/:id', function(req, res) {
+passRouter.put('/:id', function(req, res) {
   const user_id = req.body.user_id || 0;
   var id = parseInt(req.params.id);
   PassController.find(id)

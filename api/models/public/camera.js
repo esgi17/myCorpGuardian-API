@@ -1,21 +1,21 @@
 module.exports = function (sequelize, DataTypes) {
-    const Event = sequelize.define('Event', {
+    const Camera = sequelize.define('Camera', {
         id : {
             type: DataTypes.BIGINT,
             primaryKey: true,
             autoIncrement: true
         },
-        title : {
+        name: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        ref: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        url: {
             type : DataTypes.STRING,
             allowNull: false
-        },
-        date: {
-            type: DataTypes.DATE,
-            allowNull: false
-        },
-        data: {
-            type: DataTypes.STRING,
-            allowNull: true
         }
     },
     {
@@ -23,17 +23,14 @@ module.exports = function (sequelize, DataTypes) {
         underscored: true,
         freezeTableName: true
     });
-    Event.associate = _associate;
-    return Event;
+    Door.associate = _associate;
+    return Door;
 }
 
 // INTERNAL
 
 function _associate(models) {
-  models.Event.belongsTo(models.Device, {
+  models.Camera.belongsTo(models.Device, {
     as : 'device'
-  });
-  models.Event.belongsTo(models.Pass, {
-    as : 'pass'
   });
 }

@@ -13,9 +13,11 @@ eventRouter.use(bodyParser.json());
 * @apiUse eventCreated
 * @apiUse error500
 */
-eventRouter.get('/', function(req, res) {
-    const id = req.body.id;
-    EventController.getAll(id)
+eventRouter.get('/:id?', function(req, res) {
+    var idEvent = req.params.id;
+    var idPass = req.query.id_pass;
+    var idDevice = req.query.id_device;
+    EventController.getAll(idEvent, idPass, idDevice)
       .then( (event) => {
         // Si la methode ne renvoie pas d'erreur, on renvoie le résultat
         res.status(200).json({

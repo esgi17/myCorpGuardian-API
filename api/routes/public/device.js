@@ -13,8 +13,8 @@ deviceRouter.use(bodyParser.json());
 * @apiUse deviceCreated
 * @apiUse error500
 */
-deviceRouter.get('/', function(req, res) {
-    const id = req.body.id;
+deviceRouter.get('/:id?', function(req, res) {
+    const id = req.params.id;
     DeviceController.getAll(id)
       .then( (device) => {
         // Si la methode ne renvoie pas d'erreur, on renvoie le résultat

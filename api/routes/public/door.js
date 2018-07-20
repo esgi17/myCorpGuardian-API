@@ -13,8 +13,8 @@ doorRouter.use(bodyParser.json());
 * @apiUse doorCreated
 * @apiUse error500
 */
-doorRouter.get('/', function(req, res) {
-    const id = req.body.id;
+doorRouter.get('/:id?', function(req, res) {
+    const id = req.params.id;
     DoorController.getAll(id)
       .then( (door) => {
         // Si la methode ne renvoie pas d'erreur, on renvoie le résultat

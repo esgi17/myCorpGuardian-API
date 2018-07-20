@@ -183,8 +183,6 @@ userRouter.put('/', function(req, res) {
 userRouter.put('/attribute_group', function(req, res) {
     const user_id = req.body.user_id;
     const group_id = req.body.group_id;
-    console.log(user_id);
-    console.log(group_id);
     UserController.getAll(user_id)
       .then ( (user) => {
           if (user) {

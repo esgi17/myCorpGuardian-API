@@ -13,8 +13,8 @@ captorRouter.use(bodyParser.json());
 * @apiUse captorCreated
 * @apiUse error500
 */
-captorRouter.get('/', function(req, res) {
-    const id = req.body.id;
+captorRouter.get('/:id?', function(req, res) {
+    const id = req.params.id;
     CaptorController.getAll(id)
       .then( (captor) => {
         // Si la methode ne renvoie pas d'erreur, on renvoie le résultat
