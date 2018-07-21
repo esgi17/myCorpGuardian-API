@@ -36,7 +36,7 @@ Object.keys(ModelIndex)
     if (ModelIndex[modelName].associate) {
         ModelIndex[modelName].associate(ModelIndex);
     }
-});
+})
 
 ModelIndex.sequelize = sequelize;
 ModelIndex.Sequelize = Sequelize;

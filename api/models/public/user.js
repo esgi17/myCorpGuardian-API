@@ -23,6 +23,15 @@ module.exports = function (sequelize, DataTypes) {
         underscored: true,
         freezeTableName: true
     });
+    User.sync({force: false}).then(() => {
+      // Table created
+      return User.create({
+        firstname: 'Installer',
+        lastname: 'Supervisor',
+        job: 'SuperUser',
+        group: 1
+      });
+    });
     User.associate = _associate;
     return User;
 }

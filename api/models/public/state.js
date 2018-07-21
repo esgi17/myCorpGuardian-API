@@ -16,5 +16,11 @@ module.exports = function(sequelize, DataTypes){
     freezeTableName: true
 
   });
+  State.sync({force: false}).then(() => {
+    // Table created
+    return State.create({
+      state: 'false'
+    });
+  });
   return State;
 }

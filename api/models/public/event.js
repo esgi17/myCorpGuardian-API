@@ -23,6 +23,21 @@ module.exports = function (sequelize, DataTypes) {
         underscored: true,
         freezeTableName: true
     });
+    Event.sync({force: false}).then(() => {
+      // Table created
+      Event.create({
+        title: 'DataBase Created',
+        date: new Date()
+      });
+      Event.create({
+        title: 'SuperUser Created',
+        date: new Date()
+      });
+      Event.create({
+        title: 'State Created',
+        date: new Date()
+      });
+    });
     Event.associate = _associate;
     return Event;
 }
