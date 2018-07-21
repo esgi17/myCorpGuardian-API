@@ -19,7 +19,7 @@
   *     {
   *       "success" : false,
   *       "status": 404,
-  *       "message": "404 Not Found"
+  *       "message": "Object Not Found"
   *     }
   */
 
@@ -50,8 +50,9 @@
     * @apiDefine userCreated
     * @apiSuccess {Object[]} User
     * @apiSuccess {Integer} User.id User id
-    * @apiSuccess {String} User.Name User name
-    * @apiSuccess {Group} User.Group User group
+    * @apiSuccess {String} User.firstname User firstname
+    * @apiSuccces {String} User.lastname User lastname
+    * @apiSuccess {Group} User.group_id User group_id
     * @apiSuccess {Date} User.updated_at Update's date
     * @apiSuccess {Date} User.created_at Register's date
     * @apiSuccessExample {json} Success
@@ -62,10 +63,10 @@
     *      "datas" :
     *      {
     *         "id": 1,
-    *         "name": "Robin",
-    *         "surname" : "Tersou",
+    *         "firstname": "Robin",
+    *         "lastname" : "Tersou",
     *         "job" : "Chomeur",
-    *         "group" :
+    *         "group_id" :
     *         {
     *            "id" : 1,
     *            "name" : "Group1"
