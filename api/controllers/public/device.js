@@ -9,9 +9,14 @@ const DeviceController = function() { };
 /**
 *  Creation d'un Device en base
 **/
-DeviceController.add = function() {
-    return Device.create({
-    });
+DeviceController.add = function(name, ref, deviceType) {
+    const options = {};
+    options.name = name;
+    options.ref = ref;
+    if (deviceType !== undefined){
+      options.device_type_id = deviceType;
+    }
+    return Device.create(options);
 };
 
 /**

@@ -19,12 +19,19 @@ eventRouter.get('/:id?', function(req, res) {
     var idDevice = req.query.id_device;
     EventController.getAll(idEvent, idPass, idDevice)
       .then( (event) => {
-        // Si la methode ne renvoie pas d'erreur, on renvoie le résultat
-        res.status(200).json({
+        if (event[0] !== undefined){
+          res.status(200).json({
             success : true,
             status : 200,
             datas : event
-        });
+          });
+        }else{
+          res.status(404).json({
+              success : false,
+              status : 404,
+              message : "Object not found"
+          }).end();
+        }
       })
       .catch( (err) => {
           console.error(err);
@@ -46,25 +53,25 @@ eventRouter.get('/:id?', function(req, res) {
 * @apiUse error400
 */
 eventRouter.post('/', function(req, res) {
-    const date = req.body.date;
+    //const date = req.body.date;
+    const title = req.body.title;
+    const device_id = req.body.device_id;
     const data = req.body.data;
+    const pass_id = req.body.pass_id;
 
-    if( date === undefined || data === undefined ) {
+    if(  title === undefined ) {
       // Renvoi d'une erreur
       res.status(400).json({
           success : false,
           status : 400,
           message : "Bad Request"
       }).end();
+      return;
     }
-    EventController.add( date, data )
+    EventController.add(  title, data, device_id, pass_id )
       .then( (event) => {
         // Si la methode ne renvoie pas d'erreur, on renvoie le résultat
-        res.status(200).json({
-            success : true,
-            status : 200,
-            datas : event
-        });
+        res.status(200).json(event);
     }).catch( (err) => {
         // Sinon, on renvoie un erreur systeme
         console.error(err);
@@ -92,12 +99,21 @@ eventRouter.post('/', function(req, res) {
 * @apiUse error400
 */
 eventRouter.delete('/:id', function (req, res) {
-  var id = parseInt(req.params.id);
-  EventController.find(id)
+  var id = req.params.id;
+  if( id === undefined) {
+      // Renvoi d'une erreur
+      res.status(400).json({
+          success : false,
+          status : 400,
+          message : "Bad Request"
+      }).end();
+      return;
+  }
+  EventController.getAll(id)
   .then( (event) => {
-    if (event) {
+    if (event[0] !== undefined) {
       EventController.delete(id)
-        .then( event => {
+        .then( (event) => {
           res.status(200).json({
               success : true,
               status : 200,
@@ -108,7 +124,7 @@ eventRouter.delete('/:id', function (req, res) {
       res.status(400).json({
           success : false,
           status : 400,
-          message : "Event not found"
+          message : "Object not found"
       }).end();
     }
     }).catch( (err) => {

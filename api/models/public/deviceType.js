@@ -15,7 +15,6 @@ module.exports = function (sequelize, DataTypes) {
         underscored: true,
         freezeTableName: true
     });
-    // User.associate = _associate;
     return DeviceType;
 }
 

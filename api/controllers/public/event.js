@@ -9,12 +9,21 @@ const EventController = function() { };
 /**
 *  Creation d'un Event en base
 **/
-EventController.add = function( date, data, device_id ) {
-    return Event.create({
-        date: date,
-        data: data,
-        device_id: device_id
-    });
+EventController.add = function( title, data, device_id, pass_id ) {
+    const options = {};
+    options.date = new Date();
+    options.title = title;
+    if (data !== undefined){
+      options.data = data;
+    }
+    if (device_id !== undefined){
+      options.device_id = device_id;
+    }
+    if (pass_id !== undefined){
+      options.pass_id = pass_id;
+    }
+
+    return Event.create(options);
 };
 
 /**
@@ -57,7 +66,7 @@ EventController.getAll = function (idEvent, idPass, idDevice) {
 
     if( idEvent !== undefined ) {
         where.id = {
-            [Op.eq] : `${id}`
+            [Op.eq] : `${idEvent}`
         };
     }
 

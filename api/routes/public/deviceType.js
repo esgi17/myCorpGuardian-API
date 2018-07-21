@@ -17,12 +17,21 @@ deviceTypeRouter.get('/:id?', function(req, res) {
     const id = req.params.id;
     DeviceTypeController.getAll(id)
       .then( (deviceType) => {
-        // Si la methode ne renvoie pas d'erreur, on renvoie le résultat
-        res.status(200).json({
+        if(deviceType[0] !== undefined){
+
+          // Si la methode ne renvoie pas d'erreur, on renvoie le résultat
+          res.status(200).json({
             success : true,
             status : 200,
             datas : deviceType
-        });
+          });
+        }else{
+          res.status(404).json({
+              success : false,
+              status : 404,
+              message : "Object not found"
+          }).end();
+        }
       })
       .catch( (err) => {
           console.error(err);
@@ -53,15 +62,12 @@ deviceTypeRouter.post('/', function(req, res) {
           status : 400,
           message : "Bad Request"
       }).end();
+      return;
     }
     DeviceTypeController.add( name )
       .then( (deviceType) => {
         // Si la methode ne renvoie pas d'erreur, on renvoie le résultat
-        res.status(201).json({
-            success : true,
-            status : 201,
-            datas : deviceType
-        });
+        res.status(200).json(deviceType);
     }).catch( (err) => {
         // Sinon, on renvoie un erreur systeme
         console.error(err);
@@ -89,23 +95,32 @@ deviceTypeRouter.post('/', function(req, res) {
 * @apiUse error400
 */
 deviceTypeRouter.delete('/:id', function (req, res) {
-  var id = parseInt(req.params.id);
-  DeviceTypeController.find(id)
+  var id = req.params.id;
+  if( id === undefined) {
+      // Renvoi d'une erreur
+      res.status(400).json({
+          success : false,
+          status : 400,
+          message : "Bad Request"
+      }).end();
+      return;
+  }
+  DeviceTypeController.getAll(id)
   .then( (deviceType) => {
-    if (deviceType) {
+    if (deviceType[0] !== undefined) {
       DeviceTypeController.delete(id)
-        .then( deviceType => {
+        .then( (deviceType) => {
           res.status(200).json({
               success : true,
-              status : 201,
+              status : 200,
               message : "DeviceType deleted"
           });
         });
     } else {
-      res.status(400).json({
+      res.status(404).json({
           success : false,
-          status : 400,
-          message : "DeviceType not found"
+          status : 404,
+          message : "Object not found"
       }).end();
     }
     }).catch( (err) => {
@@ -127,26 +142,33 @@ deviceTypeRouter.delete('/:id', function (req, res) {
 * @apiUse error404
 * @apiUse error400
 */
-deviceTypeRouter.put('/:id?', function(req, res) {
+deviceTypeRouter.put('/', function(req, res) {
   const name = req.body.name;
-  const id = parseInt(req.params.id);
-
+  const id = req.body.id;
+  if (name === undefined || id === undefined){
+    res.status(400).json({
+        success : false,
+        status : 400,
+        message : "Bad Request"
+    }).end();
+    return;
+  }
   DeviceTypeController.getAll(id)
     .then( (deviceType) => {
-      if (deviceType) {
+      if (deviceType[0] !== undefined) {
           DeviceTypeController.update(id, name )
             .then( (deviceType) => {
                 res.status(200).json({
                     success : true,
                     status : 200,
-                    datas : deviceType
+                    message : "deviceType updated"
                 });
             });
       } else {
-          res.status(400).json({
+          res.status(404).json({
               success: false,
-              status : 400,
-              message : "Bad Request"
+              status : 404,
+              message : "Object not found"
           });
       }
     }).catch( (err) => {

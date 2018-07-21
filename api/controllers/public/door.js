@@ -35,11 +35,12 @@ DoorController.find = function( id ) {
 /**
 *  Creation d'un groupe
 **/
-DoorController.add = function( name, ref ) {
-    return Door.create({
-      name : name,
-      ref : ref
-    });
+DoorController.add = function( device_id) {
+    const options ={};
+    if (device_id !== undefined){
+      options.device_id = device_id
+    }
+    return Door.create(options);
 };
 
 /**
@@ -53,19 +54,6 @@ DoorController.delete = function ( id ) {
   });
 }
 
-/**
-*  Modification d'une porte en base
-**/
-DoorController.update = function( id, name, ref ) {
-    return User.update({
-        name: name,
-        ref: ref
-    },{
-      where: {
-        id : id
-      }
-    });
-};
 
 
 // Export du controller

@@ -15,15 +15,28 @@ groupRouter.get('/:id?', function(req, res) {
     const id = req.params.id;
     GroupController.getAll( id )
       .then( (group) => {
-        res.status(200).json({
+        if (group[0] !== undefined){
+
+          res.status(200).json({
             success : true,
             status : 200,
             datas : group
-        });
+          });
+        }else{
+        res.status(404).json({
+            success : false,
+            status : 404,
+            message : "Object not found"
+        }).end();
+      }
       })
       .catch( (err) => {
           console.error(err);
-          res.status(500).end();
+          res.status(500).json({
+              success : false,
+              status : 500,
+              message : "500 Internal Server Error"
+          }).end();
       });
 });
 
@@ -35,8 +48,12 @@ groupRouter.get('/:id?', function(req, res) {
 groupRouter.post('/', function(req, res) {
     const name = req.body.name;
     if( name === undefined ) {
-        res.status(400).end();
-        return;
+      res.status(400).json({
+          success : false,
+          status : 400,
+          message : "Bad Request"
+      }).end();
+      return;
     }
     GroupController.add(name)
       .then( (group) => {
@@ -44,7 +61,11 @@ groupRouter.post('/', function(req, res) {
       })
       .catch( (err) => {
           console.error(err);
-          res.status(500).end();
+          res.status(500).json({
+              success : false,
+              status : 500,
+              message : "500 Internal Server Error"
+          }).end();
       })
 });
 
@@ -54,44 +75,80 @@ groupRouter.post('/', function(req, res) {
 * @route : /group/
 */
 groupRouter.delete('/:id', function (req, res) {
-  var id = parseInt(req.params.id);
-  GroupController.find(id)
+  var id = req.params.id;
+  if( id === undefined) {
+      // Renvoi d'une erreur
+      res.status(400).json({
+          success : false,
+          status : 400,
+          message : "Bad Request"
+      }).end();
+      return;
+  }
+  GroupController.getAll(id)
   .then( (group) => {
-    if (group) {
+    if (group[0] !== undefined) {
       GroupController.delete(id)
         .then( group => {
-            res.status(200).json('Group deleted');
+          res.status(200).json({
+              success : true,
+              status : 200,
+              message : "Group deleted"
+          });
         });
     } else {
-      res.status(400).json('Group not found');
+      res.status(404).json({
+            success : false,
+            status : 404,
+            message : "Object not found"
+      });
     }
     }).catch( (err) => {
         console.error(err);
-        res.status(500).end();
+        res.status(500).json({
+            success : false,
+            status : 500,
+            message : "500 Internal Server Error"
+        }).end();
     });
 });
 
-/*
-* Affectation / Modification d'un badge
-* @method : patch
-* @route : /badge/
-*/
-groupRouter.patch('/:id', function(req, res) {
-  const user_id = req.body.user_id || 0;
-  var id = parseInt(req.params.id);
-  GroupController.find(id)
-  .then( (user) => {
-    if (user) {
-      GroupController.attribute(id, user_id)
-      .then( user => {
-      res.status(200).json('Group updated');
-      });
-    } else {
-      res.status(400).json('Group not found');
-    }
-    }).catch( (err) => {
-        console.error(err);
-        res.status(500).end();
+groupRouter.put('/', function(req,res) {
+  const name = req.body.name;
+  const id = req.body.id;
+  if(name === undefined || id === undefined){
+    res.status(400).json({
+      success : false,
+      status : 400,
+      message : "Bad request"
+    }).end();
+    return;
+  }
+  GroupController.getAll(id)
+    .then((group) => {
+      if(group[0] !== undefined){
+        GroupController.update(id, name)
+          .then((group) => {
+            res.status(200).json({
+              success : true,
+              status : 200,
+              message : "Group updated"
+            });
+          });
+      }else{
+        res.status(404).json({
+          success : false,
+          status : 404,
+          message : "Object not found"
+        });
+      }
+    }).catch((err) => {
+      console.error(err);
+      res.status(500).json({
+        success : false,
+        status : 500,
+        message : "500 Internal Server Error"
+      }).end();
     });
 });
 

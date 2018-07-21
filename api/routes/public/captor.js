@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const publicConfig = require('./config');
 const CaptorController = require(publicConfig.controllers.captor_path);
+const DeviceController = require(publicConfig.controllers.device_path);
 
 const captorRouter = express.Router();
 captorRouter.use(bodyParser.json());
@@ -17,12 +18,19 @@ captorRouter.get('/:id?', function(req, res) {
     const id = req.params.id;
     CaptorController.getAll(id)
       .then( (captor) => {
-        // Si la methode ne renvoie pas d'erreur, on renvoie le résultat
+        if (captor[0] !== undefined){
           res.status(200).json({
               success : true,
-              status : 201,
+              status : 200,
               datas : captor
           });
+        }else{
+          res.status(404).json({
+              success : false,
+              status : 404,
+              message : "Object not found"
+          }).end();
+        }
       })
       .catch( (err) => {
           console.error(err);
@@ -44,26 +52,27 @@ captorRouter.get('/:id?', function(req, res) {
 * @apiUse error400
 */
 captorRouter.post('/', function(req, res) {
-    const ip = req.body.ip;
-    const type = req.body.type;
-    const description = req.body.description;
-
-    if( ip === undefined || type === undefined ) {
-        // Renvoi d'une erreur
-        res.status(400).json({
-            success : false,
-            status : 400,
-            message : "Bad Request"
-        }).end();
+    const name = req.body.name;
+    const ref = req.body.ref;
+    if (name === undefined || ref === undefined){
+      // Renvoi d'une erreur
+      res.status(400).json({
+          success : false,
+          status : 400,
+          message : "Bad Request"
+      }).end();
+      return;
     }
-    CaptorController.add( ip, type, description )
-      .then( (captor) => {
-        // Si la methode ne renvoie pas d'erreur, on renvoie le résultat
-        res.status(200).json({
-            success : true,
-            status : 201,
-            datas : captor
-        });
+    DeviceController.add(name, ref, 2)
+      .then((device) => {
+        CaptorController.add( device.id)
+          .then((captor) => {
+            res.status(200).json({
+                success : true,
+                status : 200,
+                datas : captor
+            });
+          })
       })
       .catch( (err) => {
         // Sinon, on renvoie un erreur systeme
@@ -92,23 +101,36 @@ captorRouter.post('/', function(req, res) {
 * @apiUse error400
 */
 captorRouter.delete('/:id', function (req, res) {
-  var id = parseInt(req.params.id);
-  CaptorController.find(id)
+  var id = req.params.id;
+  if (id === undefined){
+    // Renvoi d'une erreur
+    res.status(400).json({
+        success : false,
+        status : 400,
+        message : "Bad Request"
+    }).end();
+    return;
+  }
+  CaptorController.getAll(id)
   .then( (captor) => {
-    if (captor) {
+    if (captor[0] !== undefined) {
+      DeviceController.delete(captor[0].dataValues.device_id)
+        .then((device) => {
+
       CaptorController.delete(id)
-        .then( captor => {
-          res.status(201).json({
+        .then( (captor) => {
+          res.status(200).json({
               success : true,
-              status : 201,
+              status : 200,
               message : "Captor deleted"
           });
         });
+      })
     } else {
-        res.status(400).json({
+        res.status(404).json({
             success : false,
-            status : 400,
-            message : "Captor not found"
+            status : 404,
+            message : "Object not found"
         }).end();
     }
     }).catch( (err) => {
@@ -121,47 +143,5 @@ captorRouter.delete('/:id', function (req, res) {
     });
 });
 
-/**
-* @api {put} /Captor UPDATE Captor
-* @apiGroup captor
-* @apiUse captorExample
-* @apiUse captorCreated
-* @apiUse error500
-* @apiUse error404
-* @apiUse error400
-*/
-captorRouter.put('/:id?', function(req, res) {
-  const ip = req.body.ip;
-  const type = req.body.type;
-  const description = req.body.description;
-  const id = parseInt(req.params.id);
-
-  CaptorController.getAll(id)
-    .then( (captor) => {
-      if (captor) {
-          CaptorController.update(id, ip, type, description )
-            .then( (captor) => {
-                res.status(200).json({
-                    success : true,
-                    status : 200,
-                    datas : captor
-                });
-            });
-      } else {
-          res.status(400).json({
-              success: false,
-              status : 400,
-              message : "Bad Request"
-          });
-      }
-    }).catch( (err) => {
-        console.error(err);
-        res.status(500).json({
-            success : false,
-            status : 500,
-            message : "500 Internal Server Error"
-        }).end();
-    });
-});
 
 module.exports = captorRouter;

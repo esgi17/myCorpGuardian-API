@@ -9,12 +9,13 @@ const CaptorController = function() { };
 /**
 *  Creation d'un Captor en base
 **/
-CaptorController.add = function( ip, type, description ) {
-    return Captor.create({
-        ip: ip,
-        type: type,
-        description: description
-    });
+CaptorController.add = function( device_id ) {
+    const options = {};
+
+    if (device_id !== undefined){
+      options.device_id = device_id;
+    }
+    return Captor.create(options);
 };
 
 /**
@@ -28,20 +29,6 @@ CaptorController.delete = function(id) {
   });
 }
 
-/**
-*  Modification d'un Captor en base
-**/
-CaptorController.update = function( id, ip, type, description ) {
-    return Captor.update({
-      ip: ip,
-      type: type,
-      description: description
-    },{
-      where: {
-        id : id
-      }
-    });
-};
 
 /**
 *  Récupération des élements en base

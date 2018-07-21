@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const publicConfig = require('./config');
 const PassController = require(publicConfig.controllers.pass_path);
-
+const DeviceController = require(publicConfig.controllers.device_path);
 //const HomeController = controllers.HomeController;
 
 const passRouter = express.Router();
@@ -16,15 +16,33 @@ passRouter.use(bodyParser.json());
 * @apiUse error500
 * @apiUse error404
 */
-passRouter.get('/:id', function(req, res) {
+passRouter.get('/:id?', function(req, res) {
     const id = req.params.id;
     PassController.getAll(id)
       .then( (pass) => {
-          res.status(200).json(pass);
+        if (pass[0] !== undefined){
+          res.status(200).json({
+            success : true,
+            status : 200,
+            datas : pass
+          });
+        }else{
+          res.status(404).json({
+              success : false,
+              status : 404,
+              message : "Object not found"
+          }).end();
+
+        }
       })
       .catch( (err) => {
+          // Sinon, on renvoie un erreur systeme
           console.error(err);
-          res.status(500).end();
+          res.status(500).json({
+              success : false,
+              status : 500,
+              message : "500 Internal Server Error"
+          }).end();
       });
 });
 
@@ -38,19 +56,44 @@ passRouter.get('/:id', function(req, res) {
 * @apiUse error400
 */
 passRouter.post('/', function(req, res) {
+    const name = req.body.name;
+    const ref = req.body.ref;
     const user_id = req.body.user_id;
-    if( user_id === undefined ) {
-        res.status(400);
+    const id = req.body.id;
+    if( user_id === undefined || id === undefined) {
+        res.status(400).json({
+            success : false,
+            status : 400,
+            message : "Bad Request"
+        }).end();
         return;
     }
-    PassController.add(user_id)
-      .then( (pass) => {
-          res.status(200).json(pass);
+    DeviceController.add(name, ref, 3)
+      .then((device) => {
+        PassController.add(id, user_id, device.id)
+          .then((pass) => {
+            res.status(200).json({
+                success : true,
+                status : 200,
+                datas : pass
+            });
+          }).catch( (err) => {
+              console.error(err);
+              res.status(500).json({
+                  success : false,
+                  status : 500,
+                  message : "500 Internal Server Error"
+              }).end();
+          });
       })
       .catch( (err) => {
           console.error(err);
-          res.status(500).end();
-      })
+          res.status(500).json({
+              success : false,
+              status : 500,
+              message : "500 Internal Server Error"
+          }).end();
+      });
 });
 
 /**
@@ -69,20 +112,45 @@ passRouter.post('/', function(req, res) {
 * @apiUse error400
 */
 passRouter.delete('/:id', function (req, res) {
-  var id = parseInt(req.params.id);
-  PassController.find(id)
+  var id = req.params.id;
+  if( id === undefined) {
+      // Renvoi d'une erreur
+      res.status(400).json({
+          success : false,
+          status : 400,
+          message : "Bad Request"
+      }).end();
+      return;
+  }
+  PassController.getAll(id)
   .then( (pass) => {
-    if (pass) {
+    if (pass[0] !== undefined) {
+      DeviceController.delete(pass[0].dataValues.device_id)
+        .then((device) => {
+
       PassController.delete(id)
         .then( pass => {
-            res.status(200).json('Pass deleted');
+            res.status(200).json({
+                success : true,
+                status : 200,
+                message : "Pass deleted"
+            });
         });
+      })
     } else {
-      res.status(400).json('Pass not found');
+      res.status(404).json({
+            success : false,
+            status : 404,
+            message : "Object not found"
+      });
     }
     }).catch( (err) => {
         console.error(err);
-        res.status(500).end();
+        res.status(500).json({
+            success : false,
+            status : 500,
+            message : "500 Internal Server Error"
+        }).end();
     });
 });
 
@@ -95,23 +163,43 @@ passRouter.delete('/:id', function (req, res) {
 * @apiUse error404
 * @apiUse error400
 */
-passRouter.put('/:id', function(req, res) {
-  const user_id = req.body.user_id || 0;
-  var id = parseInt(req.params.id);
-  PassController.find(id)
+passRouter.put('/', function(req, res) {
+  const user_id = req.body.user_id;
+  const id = req.body.id;
+  if (id === undefined || user_id === undefined){
+    res.status(400).json({
+        success : false,
+        status : 400,
+        message : "Bad Request"
+    }).end();
+    return;
+  }
+  PassController.getAll(id)
   .then( (user) => {
-    if (user) {
-      PassController.attribute(id, user_id)
+    if (user[0] !== undefined) {
+      PassController.affect(id, user_id)
       .then( user => {
-      res.status(200).json('Pass updated');
+        res.status(200).json({
+            success : true,
+            status : 200,
+            message : "Pass updated"
+        });
       });
     } else {
-      res.status(400).json('Pass not found');
+      res.status(404).json({
+          success: false,
+          status : 404,
+          message : "Object not found"
+      });
     }
-    }).catch( (err) => {
-        console.error(err);
-        res.status(500).end();
-    });
+  }).catch( (err) => {
+      console.error(err);
+      res.status(500).json({
+          success : false,
+          status : 500,
+          message : "500 Internal Server Error"
+      }).end();
+  });
 });
 
 

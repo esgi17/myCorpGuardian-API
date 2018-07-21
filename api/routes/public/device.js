@@ -17,12 +17,21 @@ deviceRouter.get('/:id?', function(req, res) {
     const id = req.params.id;
     DeviceController.getAll(id)
       .then( (device) => {
+        if (device[0] !== undefined){
+
         // Si la methode ne renvoie pas d'erreur, on renvoie le résultat
-        res.status(200).json({
+          res.status(200).json({
             success : true,
             status : 200,
             datas : device
-        });
+          });
+        }else{
+          res.status(404).json({
+              success : false,
+              status : 404,
+              message : "Object not found"
+          }).end();
+        }
       })
       .catch( (err) => {
           console.error(err);
@@ -43,8 +52,19 @@ deviceRouter.get('/:id?', function(req, res) {
 * @apiUse error404
 */
 deviceRouter.post('/', function(req, res) {
-
-    DeviceController.add()
+    const name = req.body.name;
+    const ref = req.body.ref;
+    const deviceType = req.body.deviceType;
+    if (name === undefined || ref === undefined){
+      // Renvoi d'une erreur
+      res.status(400).json({
+          success : false,
+          status : 400,
+          message : "Bad Request"
+      }).end();
+      return;
+    }
+    DeviceController.add(name, ref, deviceType)
       .then( (device) => {
         // Si la methode ne renvoie pas d'erreur, on renvoie le résultat
         res.status(200).json({
@@ -79,10 +99,18 @@ deviceRouter.post('/', function(req, res) {
 * @apiUse error400
 */
 deviceRouter.delete('/:id', function (req, res) {
-  var id = parseInt(req.params.id);
-  DeviceController.find(id)
+  var id = req.params.id;
+  if (id === undefined){
+    res.status(400).json({
+        success : false,
+        status : 400,
+        message : "Bad Request"
+    }).end();
+    return;
+  }
+  DeviceController.getAll(id)
   .then( (device) => {
-    if (device) {
+    if (device[0] !== undefined) {
       DeviceController.delete(id)
         .then( device => {
           res.status(200).json({
@@ -92,10 +120,10 @@ deviceRouter.delete('/:id', function (req, res) {
           });
         });
     } else {
-      res.status(400).json({
+      res.status(404).json({
           success : false,
-          status : 400,
-          message : "Device not found"
+          status : 404,
+          message : "Object not found"
       }).end();
     }
     }).catch( (err) => {

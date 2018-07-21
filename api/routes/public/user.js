@@ -21,12 +21,21 @@ userRouter.get('/:id?', function(req, res) {
     // On appelle la methode
     UserController.getAll(id)
       .then( (user) => {
+        if (user[0] !== undefined){
+
           // Si la méthode ne renvoie pas d'erreur, on renvoie le resultat
           res.status(200).json({
-              success : true,
-              status : 200,
-              datas : user
+            success : true,
+            status : 200,
+            datas : user
           });
+        }else{
+          res.status(404).json({
+              success : false,
+              status : 404,
+              message : "Object not found"
+          }).end();
+        }
       })
       .catch( (err) => {
           // Sinon, on renvoie un erreur systeme
@@ -69,11 +78,7 @@ userRouter.post('/', function(req, res) {
     UserController.add(firstname, lastname, job, group_id)
       .then( (user) => {
           // Si la methode ne renvoie pas d'erreur, on renvoie le résultat
-          res.status(200).json({
-              success : true,
-              status : 200,
-              datas : user
-          });
+          res.status(200).json(user);
       }).catch( (err) => {
           // Sinon, on renvoie un erreur systeme
           console.error(err);
@@ -100,14 +105,23 @@ userRouter.post('/', function(req, res) {
 * @apiUse error404
 * @apiUse error400
 */
-userRouter.delete('/', function (req, res) {
+userRouter.delete('/:id', function (req, res) {
     // Récupération des parametres
-    var id = parseInt(req.body.id);
+    var id = req.params.id;
+    if( id === undefined) {
+        // Renvoi d'une erreur
+        res.status(400).json({
+            success : false,
+            status : 400,
+            message : "Bad Request"
+        }).end();
+        return;
+    }
     // Appel de la methode
     UserController.getAll(id)
       .then( (user) => {
           // Si la methode ne renvoie pas d'erreur
-          if (user) {
+          if (user[0] !== undefined) {
               // Si l'objet de retour est defini, on appelle la methode
               UserController.delete(id)
                 .then( (user) => {
@@ -115,15 +129,15 @@ userRouter.delete('/', function (req, res) {
                     res.status(200).json({
                         success : true,
                         status : 200,
-                        datas : user
+                        message : "User deleted"
                     });
                 });
               // Si la methode renvoie un objet undefined, on renvoie une erreur
           } else {
-            res.status(400).json({
+            res.status(404).json({
                   success : false,
-                  status : 400,
-                  message : "Bad Request"
+                  status : 404,
+                  message : "Object not found"
             });
           }
       }).catch( (err) => {
@@ -149,25 +163,34 @@ userRouter.put('/', function(req, res) {
   const firstname = req.body.firstname;
   const lastname = req.body.lastname;
   const job = req.body.job || "host";
-  const group_id = req.body.group_id || 0;
-  const id = parseInt(req.body.id);
+  const group_id = req.body.group_id || 1;
+  const id = req.body.id;
+  if( firstname === undefined || lastname === undefined || id === undefined) {
+      // Renvoi d'une erreur
+      res.status(400).json({
+          success : false,
+          status : 400,
+          message : "Bad Request"
+      }).end();
+      return;
+  }
 
   UserController.getAll(id)
     .then( (user) => {
-      if (user) {
+      if (user[0] !== undefined) {
           UserController.update(id, firstname, lastname, job, group_id)
             .then( (user) => {
                 res.status(200).json({
                     success : true,
                     status : 200,
-                    datas : user
+                    message : "User updated"
                 });
             });
       } else {
-          res.status(400).json({
+          res.status(404).json({
               success: false,
-              status : 400,
-              message : "Bad Request"
+              status : 404,
+              message : "Object not found"
           });
       }
     }).catch( (err) => {
@@ -183,9 +206,18 @@ userRouter.put('/', function(req, res) {
 userRouter.put('/attribute_group', function(req, res) {
     const user_id = req.body.user_id;
     const group_id = req.body.group_id;
+    if( user_id === undefined || group_id === undefined) {
+        // Renvoi d'une erreur
+        res.status(400).json({
+            success : false,
+            status : 400,
+            message : "Bad Request"
+        }).end();
+        return;
+    }
     UserController.getAll(user_id)
       .then ( (user) => {
-          if (user) {
+          if (user[0] !== undefined) {
               UserController.affectGroup(group_id, user_id)
                 .then( (user) => {
                     res.status(200).json({
@@ -195,10 +227,10 @@ userRouter.put('/attribute_group', function(req, res) {
                     });
               });
           } else {
-              res.status(400).json({
+              res.status(404).json({
                   success: false,
-                  status : 400,
-                  message : "Bad Request"
+                  status : 404,
+                  message : "Object not found"
               });
           }
       })

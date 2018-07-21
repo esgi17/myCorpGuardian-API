@@ -4,18 +4,6 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.BIGINT,
             primaryKey: true,
             autoIncrement: true
-        },
-        ip: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
-        type: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
-        description: {
-            type: DataTypes.STRING,
-            allowNull: false
         }
     },
     {
