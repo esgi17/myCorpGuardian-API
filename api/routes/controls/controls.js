@@ -2,7 +2,12 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const controllers = require('../../controllers');
 const publicRoute = require('../public');
+const publicConfig = require('../public/config');
 const ControlsController = controllers.ControlsController;
+const GroupController = require(publicConfig.controllers.group_path);
+const deviceTypeController = require(publicConfig.controllers.deviceType_path);
+const userController = require(publicConfig.controllers.user_path);
+const eventController = require(publicConfig.controllers.event_path);
 //const HomeController = controllers.HomeController;
 
 const controlsRouter = express.Router();
@@ -69,6 +74,61 @@ controlsRouter.get('/deviceType', function(req, res) {
     });
 });
 
+controlsRouter.post('/', function(req, res){
+   const groupname = req.body.groupname || "host";
+   const firstDevice = req.body.firstDevice || "Door";
+   const secondDevice = req.body.secondDevice || "Captor";
+   const thirdDevice = req.body.thirdDevice || "Pass";
+   const fourthDevice = req.body.fourthDevice || "Camera";
+
+   GroupController.add(groupname)
+    .then((group) => {
+      deviceTypeController.add(firstDevice)
+        .then((device) => {
+          deviceTypeController.add(secondDevice)
+            .then((device) => {
+              deviceTypeController.add(thirdDevice)
+                .then((device) => {
+                  deviceTypeController.add(fourthDevice)
+                    .then((device) => {
+                      userController.add("Installer", "Supervisor", "SuperUser", 1)
+                        .then((user) => {
+                          eventController.add("DataBase Created")
+                            .then((event) => {
+                              eventController.add("SuperUser Created")
+                                .then((event) => {
+
+                                    res.status(200).json({
+                                      success : true,
+                                      status : 200,
+                                      datas : event
+                                    });
+                                }).catch((err) => {
+                                  res.status(500).end();
+                                });
+                            }).catch((err) => {
+                              res.status(500).end();
+                            });
+                        }).catch((err) => {
+                          res.status(500).end();
+                        });
+
+                    }).catch((err) => {
+                      res.status(500).end();
+                    });
+                }).catch((err) => {
+                  res.status(500).end();
+                });
+            }).catch((err) => {
+              res.status(500).end();
+            });
+        }).catch((err) => {
+          res.status(500).end();
+        });
+    }).catch((err) => {
+      res.status(500).end();
+    });
+ });
 
 
 module.exports = controlsRouter;
