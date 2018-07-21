@@ -8,6 +8,7 @@ const GroupController = require(publicConfig.controllers.group_path);
 const deviceTypeController = require(publicConfig.controllers.deviceType_path);
 const userController = require(publicConfig.controllers.user_path);
 const eventController = require(publicConfig.controllers.event_path);
+const stateController = require(publicConfig.controllers.state_path);
 //const HomeController = controllers.HomeController;
 
 const controlsRouter = express.Router();
@@ -97,12 +98,21 @@ controlsRouter.post('/', function(req, res){
                             .then((event) => {
                               eventController.add("SuperUser Created")
                                 .then((event) => {
-
-                                    res.status(200).json({
-                                      success : true,
-                                      status : 200,
-                                      datas : event
-                                    });
+                                    stateController.add("true")
+                                      .then((state) => {
+                                        eventController.add("State Created")
+                                          .then((event) => {
+                                            res.status(200).json({
+                                              success : true,
+                                              status : 200,
+                                              datas : event
+                                            });
+                                          }).catch((err) => {
+                                            res.status(500).end();
+                                          });
+                                      }).catch((err) => {
+                                        res.status(500).end();
+                                      });
                                 }).catch((err) => {
                                   res.status(500).end();
                                 });
