@@ -67,7 +67,11 @@ deviceTypeRouter.post('/', function(req, res) {
     DeviceTypeController.add( name )
       .then( (deviceType) => {
         // Si la methode ne renvoie pas d'erreur, on renvoie le résultat
-        res.status(200).json(deviceType);
+        res.status(200).json({
+            success : true,
+            status : 200,
+            datas : deviceType
+        });
     }).catch( (err) => {
         // Sinon, on renvoie un erreur systeme
         console.error(err);
