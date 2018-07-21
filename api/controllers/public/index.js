@@ -8,5 +8,6 @@ module.exports = {
   DoorController: require('./door'),
   EventController: require('./event'),
   ScheduleController: require('./schedule'),
-  CameraController: require('./camera')
+  CameraController: require('./camera'),
+  StateController: require('./state')
 }
