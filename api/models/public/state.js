@@ -18,7 +18,7 @@ module.exports = function(sequelize, DataTypes){
   });
   State.sync({force: false}).then(() => {
     // Table created
-    return State.create({
+    State.create({
       state: 'false'
     });
   });

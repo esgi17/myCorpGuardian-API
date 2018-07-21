@@ -19,7 +19,7 @@ module.exports = function (sequelize, DataTypes) {
 
     Group.sync({force: false}).then(() => {
       // Table created
-      return Group.create({
+      Group.create({
         name: 'host'
       });
     });

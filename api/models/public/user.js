@@ -25,7 +25,7 @@ module.exports = function (sequelize, DataTypes) {
     });
     User.sync({force: false}).then(() => {
       // Table created
-      return User.create({
+      User.create({
         firstname: 'Installer',
         lastname: 'Supervisor',
         job: 'SuperUser',
