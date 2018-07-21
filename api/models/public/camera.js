@@ -5,14 +5,6 @@ module.exports = function (sequelize, DataTypes) {
             primaryKey: true,
             autoIncrement: true
         },
-        name: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
-        ref: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
         url: {
             type : DataTypes.STRING,
             allowNull: false

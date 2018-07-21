@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const publicConfig = require('./config');
 const CameraController = require(publicConfig.controllers.camera_path);
+const DeviceController = require(publicConfig.controllers.device_path);
 
 const cameraRouter = express.Router();
 cameraRouter.use(bodyParser.json());
@@ -17,12 +18,21 @@ cameraRouter.get('/:id?', function(req, res) {
     const id = req.params.id;
     CameraController.getAll(id)
       .then( (camera) => {
+        if(camera[0] !== undefined){
+
         // Si la methode ne renvoie pas d'erreur, on renvoie le résultat
         res.status(200).json({
             success : true,
             status : 200,
             datas : camera
         });
+      }else{
+        res.status(404).json({
+            success : false,
+            status : 404,
+            message : "Object not found"
+        }).end();
+      }
       })
       .catch( (err) => {
           console.error(err);
@@ -48,23 +58,34 @@ cameraRouter.post('/', function(req, res) {
     const ref = req.body.ref;
     const url = req.body.url;
 
-    if( ip === undefined || type === undefined ) {
+    if( name === undefined || ref === undefined  || url == undefined) {
       // Renvoi d'une erreur
         res.status(400).json({
             success : false,
             status : 400,
             message : "Bad Request"
         }).end();
+        return;
     }
-    CameraController.add( ip, name, ref )
-      .then( (camera) => {
-        // Si la methode ne renvoie pas d'erreur, on renvoie le résultat
-        res.status(200).json({
-            success : true,
-            status : 200,
-            datas : camera
-        });
-    }).catch( (err) => {
+    DeviceController.add(name, ref, 4)
+      .then((device) => {
+        CameraController.add(url, device.id)
+          .then((camera) => {
+            res.status(200).json({
+              success : true,
+              status : 200,
+              datas : camera
+            });
+          }).catch( (err) => {
+              // Sinon, on renvoie un erreur systeme
+              console.error(err);
+              res.status(500).json({
+                  success : false,
+                  status : 500,
+                  message : "500 Internal Server Error"
+              }).end();
+    })
+    .catch( (err) => {
         // Sinon, on renvoie un erreur systeme
         console.error(err);
         res.status(500).json({
@@ -73,8 +94,8 @@ cameraRouter.post('/', function(req, res) {
             message : "500 Internal Server Error"
         }).end();
     });
+  });
 });
-
 /**
 * @api {delete} /camera DELETE Camera
 * @apiGroup camera
@@ -91,22 +112,35 @@ cameraRouter.post('/', function(req, res) {
 * @apiUse error400
 */
 cameraRouter.delete('/:id', function (req, res) {
-  var id = parseInt(req.params.id);
-  CameraController.find(id)
+  var id = req.params.id;
+  if(id === undefined){
+    // Renvoi d'une erreur
+    res.status(400).json({
+        success : false,
+        status : 400,
+        message : "Bad Request"
+    }).end();
+    return;
+  }
+  CameraController.getAll(id)
   .then( (camera) => {
-    if (camera) {
+    if (camera[0] !== undefined) {
+      DeviceController.delete(camera[0].dataValues.device_id)
+        .then((device) => {
+
       CameraController.delete(id)
-        .then( camera => {
+        .then( (camera) => {
             res.status(200).json({
                 success : true,
                 status : 200,
                 message : "Camera deleted"
             });
         });
+      })
     } else {
-      res.status(400).json({
+      res.status(404).json({
           success : false,
-          status : 400,
+          status : 404,
           message : "Camera not found"
       }).end();
     }
@@ -129,15 +163,14 @@ cameraRouter.delete('/:id', function (req, res) {
 * @apiUse error404
 * @apiUse error400
 */
-cameraRouter.put('/:id?', function(req, res) {
-  const name = req.body.name;
-  const ref = req.body.ref;
-  const id = parseInt(req.params.id);
+cameraRouter.put('/', function(req, res) {
+  const url = req.body.url;
+  const id = req.body.id;
 
   CameraController.getAll(id)
     .then( (camera) => {
-      if (camera) {
-          CameraController.update( id, name, ref )
+      if (camera[0] !== undefined) {
+          CameraController.update( id, url )
             .then( (camera) => {
                 res.status(200).json({
                     success : true,
@@ -146,10 +179,10 @@ cameraRouter.put('/:id?', function(req, res) {
                 });
             });
       } else {
-          res.status(400).json({
+          res.status(404).json({
               success: false,
-              status : 400,
-              message : "Bad Request"
+              status : 404,
+              message : "Object not found"
           });
       }
     }).catch( (err) => {

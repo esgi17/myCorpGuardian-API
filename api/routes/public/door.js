@@ -69,8 +69,19 @@ doorRouter.post('/', function(req, res) {
       .then((device) => {
         DoorController.add(device.id)
           .then((door) => {
-            res.status(200).json(door);
-          })
+            res.status(200).json({
+              success : true,
+              status : 200,
+              datas : door
+            });
+          }).catch( (err) => {
+              // Sinon, on renvoie un erreur systeme
+              console.error(err);
+              res.status(500).json({
+                  success : false,
+                  status : 500,
+                  message : "500 Internal Server Error"
+              }).end();
       })
       .catch( (err) => {
         // Sinon, on renvoie un erreur systeme
@@ -81,6 +92,7 @@ doorRouter.post('/', function(req, res) {
             message : "500 Internal Server Error"
         }).end();
     });
+});
 });
 
 /**
@@ -112,6 +124,9 @@ doorRouter.delete('/:id', function (req, res) {
   DoorController.getAll(id)
   .then( (door) => {
     if (door[0] !== undefined) {
+      DeviceController.delete(door[0].dataValues.device_id)
+        .then((device) => {
+
       DoorController.delete(id)
         .then( (door) => {
             res.status(200).json({
@@ -120,6 +135,7 @@ doorRouter.delete('/:id', function (req, res) {
                 message : "Door deleted"
             });
         });
+      })
     } else {
       res.status(404).json({
           success : false,
@@ -134,8 +150,7 @@ doorRouter.delete('/:id', function (req, res) {
             status : 500,
             message : "500 Internal Server Error"
         }).end();
+        return;
     });
 });
-
-
 module.exports = doorRouter;
