@@ -36,9 +36,8 @@ PassController.find = function(id) {
 /**
 *  Creation d'un badge
 **/
-PassController.add = function(id, user_id, device_id) {
+PassController.add = function( user_id, device_id) {
     return Pass.create({
-        id: id,
         user_id: user_id,
         device_id: device_id
     });

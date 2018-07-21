@@ -59,8 +59,8 @@ passRouter.post('/', function(req, res) {
     const name = req.body.name;
     const ref = req.body.ref;
     const user_id = req.body.user_id;
-    const id = req.body.id;
-    if( user_id === undefined || id === undefined) {
+    //const id = req.body.id;
+    if( user_id === undefined ) {
         res.status(400).json({
             success : false,
             status : 400,
@@ -70,7 +70,7 @@ passRouter.post('/', function(req, res) {
     }
     DeviceController.add(name, ref, 3)
       .then((device) => {
-        PassController.add(id, user_id, device.id)
+        PassController.add(user_id, device.id)
           .then((pass) => {
             res.status(200).json({
                 success : true,
