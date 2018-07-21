@@ -171,7 +171,11 @@ scheduleRouter.put('/', function(req, res) {
       if (schedule[0] !== undefined) {
           ScheduleController.update( id, h_start, h_stop, day, door_id, group_id )
             .then( (schedule) => {
-                res.status(200).json(schedule);
+                res.status(200).json({
+                    success : true,
+                    status : 200,
+                    datas : schedule
+                });
             });
       } else {
           res.status(404).json({

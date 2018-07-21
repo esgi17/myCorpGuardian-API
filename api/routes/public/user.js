@@ -78,7 +78,11 @@ userRouter.post('/', function(req, res) {
     UserController.add(firstname, lastname, job, group_id)
       .then( (user) => {
           // Si la methode ne renvoie pas d'erreur, on renvoie le résultat
-          res.status(200).json(user);
+          res.status(200).json({
+              success : true,
+              status : 200,
+              datas : user
+          });
       }).catch( (err) => {
           // Sinon, on renvoie un erreur systeme
           console.error(err);
@@ -236,7 +240,11 @@ userRouter.put('/attribute_group', function(req, res) {
       })
       .catch( (err) => {
           console.error(err);
-          res.status(500).end();
+          res.status(500).json({
+              success : false,
+              status : 500,
+              message : "500 Internal Server Error"
+          }).end();
       });
 });
 

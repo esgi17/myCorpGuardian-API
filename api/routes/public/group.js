@@ -57,7 +57,11 @@ groupRouter.post('/', function(req, res) {
     }
     GroupController.add(name)
       .then( (group) => {
-          res.status(200).json(group);
+          res.status(200).json({
+              success : true,
+              status : 200,
+              datas : group
+          });
       })
       .catch( (err) => {
           console.error(err);
