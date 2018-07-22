@@ -35,28 +35,31 @@ function(req,res, next) {
 *  Récuperer l'id du device en passant sa reference
 *   param : <string> ref_device => si vide, on renvoie une erreur
 *   return : objet device
-*/
+*//*
 controlsRouter.get('/', function(req, res) {
-  const ref_device = req.params.ref_device;
-  if( ref_device === undefined ) {
+  const ref_device = req.query.ref_device;
+  const door_id = req.query.door_id;
+  if( ref_device === undefined || door_id === undefined ) {
     res.status(400).json({
       success : false,
       status : 400,
-      message : "Bad request ! "
+      message : "Bad request "
     }).end();
   }
   DevicesController.getByReference(ref_device)
   .then( (device) => {
-    res.status(200).json({
-      success : true,
-      status : 200,
-      datas : device
-    });
+    PassController.find(device.id)
+    .then((pass) => {
+      UserController.getAll(pass.user_id)
+      .then((user) => {
+        user.group_id && door_id
+      })
+    })
   })
   .catch( (err) => {
     res.status(500).end();
   });
-});
+});*/
 
 controlsRouter.get('/deviceType', function(req, res) {
   const id_device = req.params.id_device;
@@ -109,7 +112,7 @@ controlsRouter.post('/', function(req, res){
                     .then(() => {
                       DeviceController.add("PassTest1", "284", 3)
                       .then((device) => {
-                        PassController.add("12893", "1", device.id )
+                        PassController.add(device.id )
                         .then((event) => {
 
                           res.status(200).json({

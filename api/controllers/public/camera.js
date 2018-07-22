@@ -50,7 +50,7 @@ CameraController.add = function(url, device_id ) {
 CameraController.delete = function ( id ) {
   return Camera.destroy({
     where: {
-      id : id
+      device_id : id
     }
   });
 }

@@ -10,48 +10,48 @@ const DoorController = function() { };
 *  Récupération des élements en base
 **/
 DoorController.getAll = function (id) {
-      const options = {};
-      const where = {};
+  const options = {};
+  const where = {};
 
-      if( id !== undefined ) {
-          where.id = {
-              [Op.eq] : `${id}`
-          };
-      }
-      options.where = where;
-      return Door.findAll(options);
-  };
-
-
-/**
-*  Retrouver une porte en base
-**/
-DoorController.find = function( id ) {
-  if ( id != undefined ){
-    return Door.findById( id );
+  if( id !== undefined ) {
+    where.id = {
+      [Op.eq] : `${id}`
+    };
   }
+  options.where = where;
+  return Door.findAll(options);
+};
+
+
+DoorController.getByDevice = function(id_device){
+  return Door.findAll({
+    where : {
+      id_device:id_device
+    }
+  });
 }
 
 /**
 *  Creation d'un groupe
 **/
 DoorController.add = function( device_id) {
-    const options ={};
-    if (device_id !== undefined){
-      options.device_id = device_id
-    }
-    return Door.create(options);
+  const options ={};
+  if (device_id !== undefined){
+    options.device_id = device_id
+  }
+  return Door.create(options);
 };
 
 /**
 * Suppression d'un groupe
 **/
 DoorController.delete = function ( id ) {
-  return Door.destroy({
-    where: {
-      id : id
-    }
-  });
+
+    return Door.destroy({
+      where: {
+        device_id : id
+      }
+    });
 }
 
 

@@ -30,15 +30,18 @@ PassController.getAll = function( id ) {
 *  Retrouver un badge en base
 **/
 PassController.find = function(id) {
-    return Pass.findById(id);
+    return Pass.findAll({
+    where : {
+      device_id: id
+    }
+  });
 }
 
 /**
 *  Creation d'un badge
 **/
-PassController.add = function( user_id, device_id) {
+PassController.add = function( device_id) {
     return Pass.create({
-        user_id: user_id,
         device_id: device_id
     });
 };
@@ -67,7 +70,7 @@ PassController.affect = function (passId, userId) {
 PassController.delete = function ( id ) {
   return Pass.destroy({
     where: {
-      id : id
+      device_id : id
     }
   });
 }

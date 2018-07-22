@@ -24,7 +24,7 @@ CaptorController.add = function( device_id ) {
 CaptorController.delete = function(id) {
   return Captor.destroy({
     where: {
-      id : id
+      device_id : id
     }
   });
 }
