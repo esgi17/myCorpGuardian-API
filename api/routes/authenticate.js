@@ -133,17 +133,13 @@ loginRouter.use(function(req,res,next) {
     var token = req.body.token || req.query.token || req.headers['authorization'];
     console.log(token);
     if (AdminController.checkToken(token, config.secret_user)) {
-          console.log("*************1***********");
           controlsRoute.attach(loginRouter);
           publicRoute.attach(loginRouter);
           next();
     } else if ( AdminController.checkToken(token, config.secret_admin) ) {
 
-      console.log("*************2***********");
           next();
     } else {
-
-      console.log("*************3***********");
           return res.status(401).send({
               success: false,
               message: 'No token or bad token provided.'

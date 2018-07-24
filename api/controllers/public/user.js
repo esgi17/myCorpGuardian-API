@@ -1,5 +1,4 @@
 const publicConfig = require('./config');
-const login = require('../../routes/authenticate');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
