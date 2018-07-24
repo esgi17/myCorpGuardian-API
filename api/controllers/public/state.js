@@ -23,13 +23,15 @@ StateController.update = function(state){
 };
 
 StateController.getAll = function(id){
+  const options = {};
   const where = {};
   if( id !== undefined ) {
       where.id = {
           [Op.eq] : `${id}`
       };
   }
-  return State.findAll(where);
+  options.where = where;
+  return State.findAll(options);
 };
 
 module.exports = StateController;

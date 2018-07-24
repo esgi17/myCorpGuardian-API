@@ -29,7 +29,19 @@ DeviceController.delete = function(id) {
     }
   });
 }
-
+DeviceController.getByReference = function(ref_device){
+  const options = {
+    include: [{
+      model: ModelIndex.DeviceType,
+      as : 'deviceType'
+    }]
+  };
+  const where = {
+    ref: ref_device
+  };
+  options.where = where;
+  return Device.findAll(options)
+}
 /**
 *  Récupération des élements en base
 **/
