@@ -1,19 +1,11 @@
 module.exports = {
-    secret: 'my-super-secret',
-    private_bdd : {
-        host : 'localhost',
-        dialect : 'mysql',
-        dbname : 'my_corp_guardian_public',
-        user : 'root',
-        password : '',
-        port : 3306
-    },
+    secret_admin: 'my-super-admin-secret',
     general_bdd : {
         host : 'localhost',
         dialect : 'mysql',
         dbname : 'my_corp_guardian_general',
-        user : 'root',
-        password : '',
+        user : 'corp',
+        password : 'corp',
         port : 3306
     }
 }

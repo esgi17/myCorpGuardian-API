@@ -1,22 +1,30 @@
 module.exports = function (sequelize, DataTypes) {
-    const User = sequelize.define('User', {
+    const Corp = sequelize.define('Corp', {
         id : {
             type: DataTypes.BIGINT,
             primaryKey: true,
             autoIncrement: true
         },
-        login : {
+        name : {
             type: DataTypes.STRING,
             allowNull: false,
             unique: true
         },
-        password : {
+        db_url : {
             type : DataTypes.STRING,
             allowNull : false
         },
-        isAdmin : {
-            type : DataTypes.TINYINT,
+        db_name : {
+            type : DataTypes.STRING,
             allowNull : false
+        },
+        db_login : {
+            type : DataTypes.STRING,
+            allowNull : false
+        },
+        db_pwd : {
+            type : DataTypes.STRING,
+            allowNull : true
         }
     },
     {
@@ -24,14 +32,14 @@ module.exports = function (sequelize, DataTypes) {
         underscored: true,
         freezeTableName: true
     });
-    User.associate = _associate;
-    return User;
+    Corp.associate = _associate;
+    return Corp;
 }
 
 // INTERNAL
 
 function _associate(models) {
-    models.User.belongsTo(models.Corp, {
-        as : 'corp'
-    })
+    models.Corp.hasMany(models.User, {
+        as : 'user'
+    });
 }

@@ -1,8 +1,7 @@
 const publicConfig = require('./config');
-const ModelIndex = require(publicConfig.models_path);
-const Event = ModelIndex.Event;
-
-const Op = ModelIndex.sequelize.Op;
+const login = require('../../routes/authenticate');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 const EventController = function() { };
 
@@ -23,14 +22,14 @@ EventController.add = function( title, data, device_id, pass_id ) {
       options.pass_id = pass_id;
     }
 
-    return Event.create(options);
+    return EventController.sequelize.Event.create(options);
 };
 
 /**
 * Suppression d'un Event en base
 **/
 EventController.delete = function(id) {
-  return Event.destroy({
+  return EventController.sequelize.Event.destroy({
     where: {
       id : id
     }
@@ -41,7 +40,7 @@ EventController.delete = function(id) {
 *  Modification d'un Event en base
 **/
 EventController.update = function( id, date, data, device_id ) {
-    return Event.update({
+    return EventController.sequelize.Event.update({
       date: date,
       data: data,
       device_id: device_id
@@ -58,7 +57,7 @@ EventController.update = function( id, date, data, device_id ) {
 EventController.getAll = function (idEvent, idPass, idDevice) {
     const options = {
       include: [{
-        model: ModelIndex.Device,
+        model: EventController.sequelize.Device,
         as : 'device'
       }]
     };
@@ -82,7 +81,7 @@ EventController.getAll = function (idEvent, idPass, idDevice) {
         }
     }
     options.where = where;
-    return Event.findAll(options);
+    return EventController.sequelize.Event.findAll(options);
 };
 
 

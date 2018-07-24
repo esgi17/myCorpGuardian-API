@@ -1,15 +1,14 @@
 const publicConfig = require('./config');
-const ModelIndex = require(publicConfig.models_path);
-const Schedule = ModelIndex.Schedule;
-const Op = ModelIndex.sequelize.Op;
+const login = require('../../routes/authenticate');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
-const ScheduleController = function() { };
-
+const ScheduleController = function() {};
 /**
 *  Creation d'un Schedule en base
 **/
 ScheduleController.add = function( h_start, h_stop, day, door_id, group_id ) {
-    return Schedule.create({
+    return ScheduleController.sequelize.Schedule.create({
         h_start: h_start,
         h_stop: h_stop,
         day: day,
@@ -22,7 +21,7 @@ ScheduleController.add = function( h_start, h_stop, day, door_id, group_id ) {
 * Suppression d'un Schedule en base
 **/
 ScheduleController.delete = function(id) {
-  return Schedule.destroy({
+  return ScheduleController.sequelize.Schedule.destroy({
     where: {
       id : id
     }
@@ -33,7 +32,7 @@ ScheduleController.delete = function(id) {
 *  Modification d'un Schedule en base
 **/
 ScheduleController.update = function( id, h_start, h_stop, day, door_id, group_id ) {
-    return Schedule.update({
+    return ScheduleController.sequelize.Schedule.update({
         h_start: h_start,
         h_stop: h_stop,
         day: day,
@@ -52,11 +51,11 @@ ScheduleController.update = function( id, h_start, h_stop, day, door_id, group_i
 ScheduleController.getAll = function (id) {
     const options = {
       include: [{
-        model: ModelIndex.Group,
+        model: ScheduleController.sequelize.Group,
         as : 'group'
       },
       {
-        model: ModelIndex.Door,
+        model: ScheduleController.sequelize.Door,
         as : 'door'
       }]
     };
@@ -68,18 +67,8 @@ ScheduleController.getAll = function (id) {
         };
     }
     options.where = where;
-    return Schedule.findAll(options);
+    return ScheduleController.sequelize.Schedule.findAll(options);
 };
-
-ScheduleController.getByGroupDoorDay = function(group_id, door_id, day){
-  return Schedule.findAll({
-    where : {
-      door_id : door_id,
-      group_id : group_id,
-      day : day
-    }
-  })
-}
 
 
 // Export du controller

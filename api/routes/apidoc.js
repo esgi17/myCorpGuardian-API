@@ -44,16 +44,20 @@
 */
 
 
-
 //---------------------------------USER APIDOC--------------------------------------//
 
 /**
 * @apiDefine userCreated
 * @apiSuccess {Object[]} User
+* @apiSuccess {Integer} User.id User id
 * @apiSuccess {String} User.firstname User firstname
 * @apiSuccces {String} User.lastname User lastname
 * @apiSuccess {String} User.job User job
+* @apiSuccess {Date} User.created_at Register's date
+* @apiSuccess {Date} User.updated_at Update's date
+* @apiSuccess {Date} User.deleted_at Delete's date
 * @apiSuccess {Integer} User.group_id User group_id
+* @apiSuccess {Group} User.group User group
 * @apiSuccessExample {json} Success
 *    HTTP/1.1 201 OK
 *    [{

@@ -1,17 +1,16 @@
 const publicConfig = require('./config');
-const ModelIndex = require(publicConfig.models_path);
-const Group = ModelIndex.Group;
-const Op = ModelIndex.sequelize.Op;
+const login = require('../../routes/authenticate');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 const GroupController = function() { };
-
 /**
 * Récupération des badges
 **/
 GroupController.getAll = function( id ) {
   const options = {
     include: [{
-       model: ModelIndex.User,
+       model: GroupController.sequelize.User,
        as : 'users'
      }]
   };
@@ -23,14 +22,14 @@ GroupController.getAll = function( id ) {
       };
   }
   options.where = where;
-  return Group.findAll(options);
+  return GroupController.sequelize.Group.findAll(options);
 };
 /**
 *  Retrouver un groupe en base
 **/
 GroupController.find = function( id ) {
   if ( id != undefined ){
-    return Group.findById( id );
+    return GroupController.sequelize.Group.findById( id );
   }
 }
 
@@ -38,14 +37,14 @@ GroupController.find = function( id ) {
 *  Creation d'un groupe
 **/
 GroupController.add = function(name) {
-    return Group.create({
+    return GroupController.sequelize.Group.create({
         name : name
     });
 };
 
 
 GroupController.update = function(id, name) {
-    return Group.update({
+    return GroupController.sequelize.Group.update({
           name : name,
       },
       {
@@ -60,7 +59,7 @@ GroupController.update = function(id, name) {
 * Suppression d'un groupe
 **/
 GroupController.delete = function ( id ) {
-  return Group.destroy({
+  return GroupController.sequelize.Group.destroy({
     where: {
       id : id
     }

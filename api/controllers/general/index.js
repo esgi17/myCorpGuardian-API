@@ -1,3 +1,4 @@
 module.exports = {
-    AdminController : require('./admin')
+    AdminController : require('./admin'),
+    CorpController : require('./corp')
 }

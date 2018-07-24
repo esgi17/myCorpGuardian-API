@@ -1,8 +1,7 @@
 const publicConfig = require('./config');
-const ModelIndex = require(publicConfig.models_path);
-const DeviceType = ModelIndex.DeviceType;
-
-const Op = ModelIndex.sequelize.Op;
+const login = require('../../routes/authenticate');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 const DeviceTypeController = function() { };
 
@@ -10,7 +9,7 @@ const DeviceTypeController = function() { };
 *  Creation d'un DeviceType en base
 **/
 DeviceTypeController.add = function(name) {
-    return DeviceType.create({
+    return DeviceTypeController.sequelize.DeviceType.create({
         name: name
     });
 };
@@ -19,7 +18,7 @@ DeviceTypeController.add = function(name) {
 * Suppression d'un DeviceType en base
 **/
 DeviceTypeController.delete = function(id) {
-  return DeviceType.destroy({
+  return DeviceTypeController.sequelize.DeviceType.destroy({
     where: {
       id : id
     }
@@ -30,7 +29,7 @@ DeviceTypeController.delete = function(id) {
 *  Modification d'un DeviceType en base
 **/
 DeviceTypeController.update = function( id, name ) {
-    return DeviceType.update({
+    return DeviceTypeController.sequelize.DeviceType.update({
         name: name
     },{
       where: {
@@ -42,7 +41,7 @@ DeviceTypeController.update = function( id, name ) {
 /**
 *  Récupération des élements en base
 **/
-DeviceTypeController.getAll = function (id) {
+DeviceTypeController.getAll = function (id, name) {
     const options = {};
     const where = {};
 
@@ -51,8 +50,14 @@ DeviceTypeController.getAll = function (id) {
             [Op.eq] : `${id}`
         };
     }
+
+    if( name !== undefined ) {
+        where.name = {
+            [Op.eq] : `${name}`
+        }
+    }
     options.where = where;
-    return DeviceType.findAll(options);
+    return DeviceTypeController.sequelize.DeviceType.findAll(options);
 };
 
 

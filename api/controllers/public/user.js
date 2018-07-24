@@ -1,16 +1,14 @@
 const publicConfig = require('./config');
-const ModelIndex = require(publicConfig.models_path);
-const User = ModelIndex.User;
+const login = require('../../routes/authenticate');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
-const Op = ModelIndex.sequelize.Op;
-
-const UserController = function() { };
-
+const UserController = function() {}
 /**
 *  Creation d'un User en base
 **/
 UserController.add = function(firstname, lastname, job, group_id) {
-    return User.create({
+    return UserController.sequelize.User.create({
         firstname: firstname,
         lastname: lastname,
         job: job,
@@ -22,7 +20,7 @@ UserController.add = function(firstname, lastname, job, group_id) {
 * Suppression d'un User en base
 **/
 UserController.delete = function(id) {
-  return User.destroy({
+  return UserController.sequelize.User.destroy({
     where: {
       id : id
     }
@@ -33,7 +31,7 @@ UserController.delete = function(id) {
 *  Modification d'un User en base
 **/
 UserController.update = function(id, firstname, lastname, job, group_id) {
-    return User.update({
+    return UserController.sequelize.User.update({
         firstname: firstname,
         lastname: lastname,
         job: job,
@@ -46,7 +44,7 @@ UserController.update = function(id, firstname, lastname, job, group_id) {
 };
 
 UserController.affectGroup = function(group_id, user_id) {
-    return User.update({
+    return UserController.sequelize.User.update({
         group_id : group_id
     },
     {
@@ -59,9 +57,10 @@ UserController.affectGroup = function(group_id, user_id) {
 *  Récupération des élements en base
 **/
 UserController.getAll = function (id) {
+
     const options = {
       include: [{
-        model: ModelIndex.Group,
+        model: UserController.sequelize.Group,
         as : 'group'
       }]
     };
@@ -73,8 +72,14 @@ UserController.getAll = function (id) {
         };
     }
     options.where = where;
-    return User.findAll(options);
+    return UserController.sequelize.User.findAll(options);
 };
+
+UserController.disconnect = function() {
+
+//      UserController.sequelize.close();
+
+}
 
 // Export du controller
 module.exports = UserController;

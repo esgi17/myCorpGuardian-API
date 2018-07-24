@@ -7,7 +7,13 @@ const DeviceController = require(publicConfig.controllers.device_path);
 const cameraRouter = express.Router();
 cameraRouter.use(bodyParser.json());
 
-
+/**
+* @api {get} /Camera GET Camera
+* @apiGroup camera
+* @apiUse searchById
+* @apiUse cameraCreated
+* @apiUse error500
+*/
 cameraRouter.get('/:id?', function(req, res) {
     const id = req.params.id;
     CameraController.getAll(id)
@@ -38,7 +44,15 @@ cameraRouter.get('/:id?', function(req, res) {
       });
 });
 
-
+/**
+* @api {post} /Camera ADD Camera
+* @apiGroup camera
+* @apiUse cameraExample
+* @apiUse cameraCreated
+* @apiUse error500
+* @apiUse error404
+* @apiUse error400
+*/
 cameraRouter.post('/', function(req, res) {
     const name = req.body.name;
     const ref = req.body.ref;
@@ -82,7 +96,21 @@ cameraRouter.post('/', function(req, res) {
     });
   });
 });
-
+/**
+* @api {delete} /camera DELETE Camera
+* @apiGroup camera
+* @apiUse searchById
+* @apiSuccessExample
+*    HTTP/1.1 200 Camera deleted
+*     {
+*       "success" : true
+*       "status": 200
+*       "message": "Camera deleted"
+*     }
+* @apiUse error500
+* @apiUse error404
+* @apiUse error400
+*/
 cameraRouter.delete('/:id', function (req, res) {
   var id = req.params.id;
   if(id === undefined){
@@ -94,13 +122,13 @@ cameraRouter.delete('/:id', function (req, res) {
     }).end();
     return;
   }
-  DeviceController.getAll(id)
-  .then( (device) => {
-    if (device[0] !== undefined) {
-      DeviceController.delete(id)
-        .then(() => {
+  CameraController.getAll(id)
+  .then( (camera) => {
+    if (camera[0] !== undefined) {
+      DeviceController.delete(camera[0].dataValues.device_id)
+        .then((device) => {
 
-      CameraController.delete(device[0].id)
+      CameraController.delete(id)
         .then( (camera) => {
             res.status(200).json({
                 success : true,
@@ -126,7 +154,15 @@ cameraRouter.delete('/:id', function (req, res) {
     });
 });
 
-
+/**
+* @api {put} /Camera UPDATE Camera
+* @apiGroup camera
+* @apiUse cameraExample
+* @apiUse cameraCreated
+* @apiUse error500
+* @apiUse error404
+* @apiUse error400
+*/
 cameraRouter.put('/', function(req, res) {
   const url = req.body.url;
   const id = req.body.id;

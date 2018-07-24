@@ -15,7 +15,8 @@ deviceRouter.use(bodyParser.json());
 */
 deviceRouter.get('/:id?', function(req, res) {
     const id = req.params.id;
-    DeviceController.getAll(id)
+    const device_type_id = req.query.device_type_id;
+    DeviceController.getAll(id, device_type_id)
       .then( (device) => {
         if (device[0] !== undefined){
 

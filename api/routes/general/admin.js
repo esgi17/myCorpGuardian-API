@@ -34,6 +34,8 @@ adminRouter.post('/', function(req, res) {
     /* Récupération des parametres */
     const login = req.body.login;
     const password = req.body.password;
+    const isAdmin = req.body.isAdmin || 0;
+    const corp_id = req.body.corp_id;
 
     // Si les parametres obligatoires ne sont pas tous remplis
     if( login === undefined || password === undefined) {
@@ -46,7 +48,7 @@ adminRouter.post('/', function(req, res) {
         return;
     }
     // Sinon, on appelle la methode
-    AdminController.add(login, password)
+    AdminController.add(login, password, isAdmin, corp_id)
       .then( (admin) => {
             // Si la methode ne renvoie pas d'erreur, on renvoie le résultat
             res.status(200).json({

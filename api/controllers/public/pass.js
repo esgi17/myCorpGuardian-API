@@ -1,7 +1,7 @@
 const publicConfig = require('./config');
-const ModelIndex = require(publicConfig.models_path);
-const Pass = ModelIndex.Pass;
-const Op = ModelIndex.sequelize.Op;
+const login = require('../../routes/authenticate');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 const PassController = function() { };
 
@@ -11,7 +11,7 @@ const PassController = function() { };
 PassController.getAll = function( id ) {
     const options = {
       include: [{
-          model: ModelIndex.User,
+          model: PassController.sequelize.User,
           as : 'user'
       }]
     };
@@ -23,25 +23,22 @@ PassController.getAll = function( id ) {
         }
     }
     options.where = where;
-    return Pass.findAll(options);
+    return PassController.sequelize.Pass.findAll(options);
 };
 
 /**
 *  Retrouver un badge en base
 **/
 PassController.find = function(id) {
-    return Pass.findAll({
-    where : {
-      device_id: id
-    }
-  });
+    return PassController.sequelize.Pass.findById(id);
 }
 
 /**
 *  Creation d'un badge
 **/
-PassController.add = function( device_id) {
-    return Pass.create({
+PassController.add = function( user_id, device_id) {
+    return PassController.sequelize.Pass.create({
+        user_id: user_id,
         device_id: device_id
     });
 };
@@ -61,16 +58,16 @@ PassController.affect = function (passId, userId) {
       };
   }
   //options.where = where;
-  return Pass.update(options, obj);
+  return PassController.sequelize.Pass.update(options, obj);
 };
 
 /**
 * Suppression d'un badge
 **/
 PassController.delete = function ( id ) {
-  return Pass.destroy({
+  return PassController.sequelize.destroy({
     where: {
-      device_id : id
+      id : id
     }
   });
 }

@@ -1,8 +1,7 @@
 const publicConfig = require('./config');
-const ModelIndex = require(publicConfig.models_path);
-const Captor = ModelIndex.Captor;
-
-const Op = ModelIndex.sequelize.Op;
+const login = require('../../routes/authenticate');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 const CaptorController = function() { };
 
@@ -15,16 +14,16 @@ CaptorController.add = function( device_id ) {
     if (device_id !== undefined){
       options.device_id = device_id;
     }
-    return Captor.create(options);
+    return CaptorController.sequelize.Captor.create(options);
 };
 
 /**
 * Suppression d'un Captor en base
 **/
 CaptorController.delete = function(id) {
-  return Captor.destroy({
+  return CaptorController.sequelize.Captor.destroy({
     where: {
-      device_id : id
+      id : id
     }
   });
 }
@@ -43,7 +42,7 @@ CaptorController.getAll = function (id) {
         };
     }
     options.where = where;
-    return Captor.findAll(options);
+    return CaptorController.sequelize.Captor.findAll(options);
 };
 
 

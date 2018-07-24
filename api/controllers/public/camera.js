@@ -1,8 +1,7 @@
 const publicConfig = require('./config');
-const ModelIndex = require(publicConfig.models_path);
-const Camera = ModelIndex.Camera;
-
-const Op = ModelIndex.sequelize.Op;
+const login = require('../../routes/authenticate');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 const CameraController = function() { };
 
@@ -19,7 +18,7 @@ CameraController.getAll = function (id) {
           };
       }
       options.where = where;
-      return Camera.findAll(options);
+      return CameraController.sequelize.Camera.findAll(options);
   };
 
 
@@ -28,7 +27,7 @@ CameraController.getAll = function (id) {
 **/
 CameraController.find = function( id ) {
   if ( id != undefined ){
-    return Camera.findById( id );
+    return CameraController.sequelize.Camera.findById( id );
   }
 }
 
@@ -41,16 +40,16 @@ CameraController.add = function(url, device_id ) {
   if (device_id !== undefined){
     options.device_id = device_id;
   }
-    return Camera.create(options);
+    return CameraController.sequelize.Camera.create(options);
 };
 
 /**
 * Suppression d'un groupe
 **/
 CameraController.delete = function ( id ) {
-  return Camera.destroy({
+  return CameraController.sequelize.Camera.destroy({
     where: {
-      device_id : id
+      id : id
     }
   });
 }
@@ -59,7 +58,7 @@ CameraController.delete = function ( id ) {
 *  Modification d'une porte en base
 **/
 CameraController.update = function( id,url) {
-    return Camera.update({
+    return CameraController.sequelize.Camera.update({
         url: url
     },{
       where: {
