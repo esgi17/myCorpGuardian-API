@@ -121,13 +121,13 @@ doorRouter.delete('/:id', function (req, res) {
       }).end();
       return;
   }
-  DoorController.getAll(id)
-  .then( (door) => {
-    if (door[0] !== undefined) {
-      DeviceController.delete(door[0].dataValues.device_id)
-        .then((device) => {
+  DeviceController.getAll(id)
+  .then( (device) => {
+    if (device[0] !== undefined) {
+      DeviceController.delete(id)
+        .then(() => {
 
-      DoorController.delete(id)
+      DoorController.delete(delete[0].id)
         .then( (door) => {
             res.status(200).json({
                 success : true,

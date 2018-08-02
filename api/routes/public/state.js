@@ -25,7 +25,7 @@ stateRouter.get('/:id?', function(req,res){
         return;
       }
     }).catch((err) => {
-      console.log(err);
+      console.error(err);
       res.status(500).json({
         success : false,
         status : 500,

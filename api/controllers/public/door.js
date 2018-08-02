@@ -21,7 +21,13 @@ DoorController.getAll = function (id) {
       return DoorController.sequelize.Door.findAll(options);
   };
 
-
+DoorController.getByDevice = function(id_device){
+  return DoorController.sequelize.Door.findAll({
+    where : {
+      id_device: id_device
+    }
+  });
+}
 /**
 *  Retrouver une porte en base
 **/
@@ -48,7 +54,7 @@ DoorController.add = function( device_id) {
 DoorController.delete = function ( id ) {
   return DoorController.sequelize.Door.destroy({
     where: {
-      id : id
+      device_id : id
     }
   });
 }

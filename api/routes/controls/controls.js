@@ -1,36 +1,34 @@
-const express = require('express');
+express = require('express');
 const bodyParser = require('body-parser');
 const controllers = require('../../controllers');
-//const publicRoute = require('../public');
+const publicRoute = require('../public');
 const publicConfig = require('../public/config');
 const ControlsController = controllers.ControlsController;
 const GroupController = require(publicConfig.controllers.group_path);
-const deviceTypeController = require(publicConfig.controllers.deviceType_path);
-const userController = require(publicConfig.controllers.user_path);
-const eventController = require(publicConfig.controllers.event_path);
-const stateController = require(publicConfig.controllers.state_path);
+const DeviceTypeController = require(publicConfig.controllers.deviceType_path);
+const UserController = require(publicConfig.controllers.user_path);
+const EventController = require(publicConfig.controllers.event_path);
+const StateController = require(publicConfig.controllers.state_path);
 const DeviceController = require(publicConfig.controllers.device_path);
 const DoorController = require(publicConfig.controllers.door_path);
 const CaptorController = require(publicConfig.controllers.captor_path);
 const PassController = require(publicConfig.controllers.pass_path);
 const CameraController = require(publicConfig.controllers.camera_path);
+const ScheduleController = require(publicConfig.controllers.schedule_path);
 //const HomeController = controllers.HomeController;
 
 const controlsRouter = express.Router();
 controlsRouter.use(bodyParser.json());
 
+
 controlsRouter.use(function ( req, res, next ){
-  console.log("Insert event");
+
   // Inserer un event
   // Si ok =>
   next();
 },
 function(req,res, next) {
-
-  console.log("yo3");
-  //publicRoute.attach(controlsRouter);
-
-  console.log("yo4");
+  publicRoute.attach(controlsRouter);
   next();
 });
 
@@ -40,43 +38,146 @@ function(req,res, next) {
 *   return : objet device
 */
 controlsRouter.get('/', function(req, res) {
-  const ref_device = req.params.ref_device;
-  if( ref_device === undefined ) {
+  const ref_device = req.query.ref_device;
+  const door_id = req.query.door_id;
+  const now  = new Date();
+  let day = now.getDay();
+  //const date = new Date('01 Jan 2000 ' + now.getHours().toString() + ':' + now.getMinutes().toString() + ':' + now.getSeconds().toString() + ' GMT');
+  const date = new Date(Date.UTC(00, 0, 1, now.getHours(), now.getMinutes(), now.getSeconds(), 0));
+  if( ref_device === undefined || door_id === undefined ) {
     res.status(400).json({
       success : false,
       status : 400,
-      message : "Bad request ! "
+      message : "Bad request "
     }).end();
   }
-  DevicesController.getByReference(ref_device)
+  DeviceController.getByReference(ref_device)
   .then( (device) => {
-    res.status(200).json({
-      success : true,
-      status : 200,
-      datas : device
-    });
-  })
-  .catch( (err) => {
+
+    if(device[0] !== undefined){
+      PassController.find(device[0].dataValues.id)
+      .then((pass) => {
+        if(pass[0] !== undefined){
+          UserController.getAll(pass[0].dataValues.user_id)
+          .then((user) => {
+
+            if(user[0] !== undefined){
+              if (now.getDay() === 0){
+                day = 7;
+              }
+              ScheduleController.getByGroupDoorDay(user[0].dataValues.group_id, door_id, day-1)
+              .then((result) => {
+                if (result[0] !== undefined){
+                  let begin = new Date('01 Jan 1900 ' + result[0].dataValues.h_start + ' GMT');
+                  let end = new Date('01 Jan 1900 ' + result[0].dataValues.h_stop + ' GMT');
+                  if (begin.valueOf() <= date.valueOf() && date.valueOf() <= end.valueOf()){
+                    EventController.add("Door Opened", undefined, device[0].dataValues.id, pass.id)
+                    .then(() => {
+
+                      res.status(202).end();
+                    }).catch( (err) => {
+                      console.error(err);
+                      res.status(500).end();
+                    });
+                  }else{
+                    EventController.add("Badging : out of Schedule", undefined, device[0].dataValues.id, pass.id)
+                      .then(() => {
+                        res.status(403).end();
+                      })
+                  }
+                }else{
+                  EventController.add("Badging : Schedule unassigned", undefined, device[0].dataValues.id, pass.id)
+                    .then(() => {
+                      res.status(403).end();
+
+                    })
+                }
+              }).catch( (err) => {
+                console.error(err);
+                res.status(500).end();
+              });
+            }else{
+              EventController.add("Badging : badge unassigned", undefined, device[0].dataValues.id, pass.id)
+                .then(() => {
+                  res.status(403).end();
+                })
+            }
+          }).catch( (err) => {
+            console.error(err);
+            res.status(500).end();
+          });
+        }else{
+
+          res.status(403).end();
+        }
+      }).catch( (err) => {
+        console.error(err);
+        res.status(500).end();
+      });
+    }else{
+      DeviceController.add("BadgeUnknown", ref_device, 2)
+      .then((added) => {
+        PassController.add(added.dataValues.id)
+        .then((pass) => {
+          EventController.add("Unknown Badge", undefined, added.dataValues.id, pass.dataValues.id)
+          .then(() => {
+            res.status(422).end();
+
+          }).catch( (err) => {
+            console.error(err);
+            res.status(500).end();
+          });
+        }).catch( (err) => {
+          console.error(err);
+          res.status(500).end();
+        });
+      }).catch( (err) => {
+        console.error(err);
+        res.status(500).end();
+      });
+    }
+  }).catch( (err) => {
+    console.error(err);
     res.status(500).end();
   });
+
 });
 
-controlsRouter.get('/deviceType', function(req, res) {
-  const id_device = req.params.id_device;
-  if( id_device === undefined ) {
+controlsRouter.get('/state', function(req, res) {
+  const captor = req.query.captor;
+
+  if( captor === undefined) {
     res.status(400).json({
       success : false,
       status : 400,
       message : "Bad request ! "
     }).end();
   }
-  DevicesController.getType(id_device)
-  .then( (deviceType) => {
-    res.status(200).json({
-      success : true,
-      status : 200,
-      datas : deviceType
-    });
+  StateController.getAll(1)
+  .then( (state) => {
+    CaptorController.getAll(captor)
+    .then((answer) => {
+      if(answer[0] !== undefined){
+
+      if (state[0].dataValues.state == 1){
+
+        EventController.add("Move detected on captor, Alarm", captor, answer[0].dataValues.device_id, undefined)
+        .then((event) => {
+          res.status(401).end();
+        })
+      }else{
+        EventController.add("Move detected on captor, not Alarm", captor, answer[0].dataValues.device_id, undefined)
+        .then(() => {
+          res.status(200).end();
+        })
+      }
+    }else{
+      EventController.add("Captor not defined", captor, undefined, undefined)
+        .then(() => {
+          res.status(400).end();
+        })
+    }
+    })
   })
   .catch( (err) => {
     res.status(500).end();
@@ -112,7 +213,7 @@ controlsRouter.post('/', function(req, res){
                     .then(() => {
                       DeviceController.add("PassTest1", "284", 3)
                       .then((device) => {
-                        PassController.add("12893", "1", device.id )
+                        PassController.add(device.id )
                         .then((event) => {
 
                           res.status(200).json({
@@ -121,23 +222,23 @@ controlsRouter.post('/', function(req, res){
                             datas : event
                           });
                         }).catch((err) => {
-                          console.log(err);
+                          console.error(err);
                           res.status(500).end();
                         });
                       }).catch((err) => {
-                        console.log(err);
+                        console.error(err);
                         res.status(501).end();
                       });
                     }).catch((err) => {
-                      console.log(err);
+                      console.error(err);
                       res.status(502).end();
                     });
                   }).catch((err) => {
-                    console.log(err);
+                    console.error(err);
                     res.status(503).end();
                   });
                 }).catch((err) => {
-                  console.log(err);
+                  console.error(err);
                   res.status(504).end();
                 });
               }).catch((err) => {

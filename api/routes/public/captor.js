@@ -111,13 +111,13 @@ captorRouter.delete('/:id', function (req, res) {
     }).end();
     return;
   }
-  CaptorController.getAll(id)
-  .then( (captor) => {
-    if (captor[0] !== undefined) {
-      DeviceController.delete(captor[0].dataValues.device_id)
-        .then((device) => {
+  DeviceController.getAll(id)
+  .then( (device) => {
+    if (device[0] !== undefined) {
+      DeviceController.delete(id)
+        .then(() => {
 
-      CaptorController.delete(id)
+      CaptorController.delete(device[0].id)
         .then( (captor) => {
           res.status(200).json({
               success : true,

@@ -25,7 +25,7 @@ const sequelize = new Sequelize(config.general_bdd.dbname, config.general_bdd.us
 // LOAD MODELS
 fs.readdirSync(__dirname)
     .filter((file) => {
-        console.log("---------"+ file + "----------");
+      
         return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js');
     })
     .forEach((file) => {
@@ -44,7 +44,7 @@ Object.keys(GeneralModelIndex)
 
 GeneralModelIndex.sequelize = sequelize;
 GeneralModelIndex.openDatabase = function() {
-    console.log("yooo");
+
     return sequelize
         .authenticate()
             .then( () => {

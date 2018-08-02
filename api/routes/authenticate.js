@@ -36,7 +36,7 @@ loginRouter.use(bodyParser.json());
 * <string>login, <string>password
 */
 loginRouter.post('/', function(req,res) {
-
+    console.log(req.body)
     const login = req.body.login;
     const password = req.body.password;
     if( login === undefined || password === undefined ) {
@@ -88,8 +88,6 @@ loginRouter.post('/', function(req,res) {
                               CaptorController.sequelize = sequelize;
                               CameraController.sequelize = sequelize;
 
-
-                              loginRouter.modelIndex = sequelize;
                               AdminController.isAdmin = false;
                               const payload = {
                                   admin : user.admin
@@ -131,13 +129,12 @@ loginRouter.post('/', function(req,res) {
 loginRouter.use(function(req,res,next) {
     // Vérification du token
     var token = req.body.token || req.query.token || req.headers['authorization'];
-    console.log(token);
     if (AdminController.checkToken(token, config.secret_user)) {
+
           controlsRoute.attach(loginRouter);
           publicRoute.attach(loginRouter);
           next();
     } else if ( AdminController.checkToken(token, config.secret_admin) ) {
-
           next();
     } else {
           return res.status(401).send({

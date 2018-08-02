@@ -30,15 +30,18 @@ PassController.getAll = function( id ) {
 *  Retrouver un badge en base
 **/
 PassController.find = function(id) {
-    return PassController.sequelize.Pass.findById(id);
+    return PassController.sequelize.Pass.findAll({
+      where : {
+        device_id : id
+      }
+    });
 }
 
 /**
 *  Creation d'un badge
 **/
-PassController.add = function( user_id, device_id) {
+PassController.add = function(device_id) {
     return PassController.sequelize.Pass.create({
-        user_id: user_id,
         device_id: device_id
     });
 };
@@ -67,7 +70,7 @@ PassController.affect = function (passId, userId) {
 PassController.delete = function ( id ) {
   return PassController.sequelize.destroy({
     where: {
-      id : id
+      device_id : id
     }
   });
 }

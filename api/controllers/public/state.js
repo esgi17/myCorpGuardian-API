@@ -22,13 +22,15 @@ StateController.update = function(state){
 };
 
 StateController.getAll = function(id){
-    const where = {};
+  const options = {};
+  const where = {};
     if( id !== undefined ) {
         where.id = {
             [Op.eq] : `${id}`
         };
     }
-    return StateController.sequelize.State.findAll(where);
+    options.where = where
+    return StateController.sequelize.State.findAll(options);
 };
 
 module.exports = StateController;

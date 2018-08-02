@@ -17,12 +17,12 @@ module.exports = function (sequelize, DataTypes) {
     })
     Group.associate = _associate;
 
-    Group.sync({force: false}).then(() => {
+    /*Group.sync({force: false}).then(() => {
       // Table created
        Group.create({
         name: 'host'
       });
-    });
+    });*/
     //Group.creation = _creation;
     return Group;
 };

@@ -1,0 +1,3 @@
+INSERT INTO `state` (`id`, `state`, `created_at`, `updated_at`, `deleted_at`) VALUES ('1', '0', CURRENT_DATE(), CURRENT_DATE(), NULL);
+INSERT INTO `devicetype` (`id`, `name`, `created_at`, `updated_at`, `deleted_at`) VALUES ('1', 'Door', CURRENT_DATE(), CURRENT_DATE(), NULL), ('2', 'Captor', CURRENT_DATE(), CURRENT_DATE(), NULL), ('3', 'Captor', CURRENT_DATE(), CURRENT_DATE(), NULL), ('4', 'Camera', CURRENT_DATE(), CURRENT_DATE(), NULL);
+INSERT INTO `group` (`id`, `name`, `created_at`, `updated_at`, `deleted_at`) VALUES ('1', 'host', CURRENT_DATE(), CURRENT_DATE(), NULL);

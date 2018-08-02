@@ -122,13 +122,13 @@ cameraRouter.delete('/:id', function (req, res) {
     }).end();
     return;
   }
-  CameraController.getAll(id)
-  .then( (camera) => {
-    if (camera[0] !== undefined) {
-      DeviceController.delete(camera[0].dataValues.device_id)
-        .then((device) => {
+  DeviceController.getAll(id)
+  .then( (device) => {
+    if (device[0] !== undefined) {
+      DeviceController.delete(id)
+        .then(() => {
 
-      CameraController.delete(id)
+      CameraController.delete(device[0].id)
         .then( (camera) => {
             res.status(200).json({
                 success : true,

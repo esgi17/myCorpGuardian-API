@@ -27,7 +27,7 @@ class ModelIndex {
                       resolve(this.sequelize);
                   })
                   .catch( (err) => {
-                      console.log(err);
+                      console.error(err);
                       reject()
                   });
             }
@@ -64,20 +64,20 @@ class ModelIndex {
             .authenticate()
                 .then(() => this.sequelize.sync({force : false})
                   .then(() => {
-                      Object.keys(ModelIndex)
+                      /*Object.keys(ModelIndex)
                           .forEach((modelName) => {
                               if (ModelIndex[modelName].synchro){
                                   //ModelIndex[modelName].synchro(ModelIndex);
 
                               }
-                          })
+                          })*/
                   })
                   .catch( (err) => {
-                      console.log(err);
+                      console.error(err);
                   })
                 )
                 .catch((err) => {
-                    console.log(err);
+                    console.error(err);
                 });
 
     }

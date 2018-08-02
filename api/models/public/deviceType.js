@@ -15,7 +15,7 @@ module.exports = function (sequelize, DataTypes) {
         underscored: true,
         freezeTableName: true
     });
-    DeviceType.sync({force: false}).then(() => {
+    /*DeviceType.sync({force: false}).then(() => {
       // Table created
       var array = ["Door", "Captor", "Pass", "Camera"];
       for (var i = 0; i < 4; i++){
@@ -24,7 +24,7 @@ module.exports = function (sequelize, DataTypes) {
           name: array[i]
         });
       }
-    });
+    });*/
     return DeviceType;
 }
 

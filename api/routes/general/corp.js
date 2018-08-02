@@ -24,7 +24,7 @@ corpRouter.get('/:id?', function(req, res) {
             }
         })
         .catch( (err) => {
-            console.log(err);
+            console.error(err);
             res.status(500).json({
                 success : false,
                 status : 500,
@@ -50,7 +50,7 @@ corpRouter.put('/:id', function(req, res) {
     CorpController.getAll(id)
         .then( (corp) => {
             if( corp[0] !== undefined ) {
-              console.log(corp[0].name);
+
               CorpController.update(id, name || corp[0].name, db_url || corp[0].db_url, db_name || corp[0].db_name, db_login || corp[0].db_login, db_pwd || corp[0].db_pwd)
                   .then( (user) => {
                       res.status(200).json({
@@ -60,7 +60,7 @@ corpRouter.put('/:id', function(req, res) {
                       })
                   })
                   .catch( (err) => {
-                    console.log(err);
+                    console.error(err);
                     res.status(500).json({
                         success : false,
                         status : 500,
@@ -76,7 +76,7 @@ corpRouter.put('/:id', function(req, res) {
             }
         })
         .catch( (err) => {
-            console.log(err);
+            console.error(err);
             res.status(500).json({
                 success : false,
                 status : 500,

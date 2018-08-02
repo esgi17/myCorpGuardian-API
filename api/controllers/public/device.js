@@ -28,7 +28,19 @@ DeviceController.delete = function(id) {
     }
   });
 }
-
+DeviceController.getByReference = function(ref_device){
+  const options = {
+    include: [{
+      model: DeviceController.sequelize.DeviceType,
+      as : 'deviceType'
+    }]
+  };
+  const where = {
+    ref: ref_device
+  };
+  options.where = where;
+  return DeviceController.sequelize.Device.findAll(options);
+}
 /**
 *  Récupération des élements en base
 **/

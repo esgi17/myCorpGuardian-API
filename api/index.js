@@ -22,7 +22,6 @@ GeneralModelIndex
 function _startServer() {
 
     const app = express();
-    console.log(config);
     app.set('secret', config.secret_admin);
 
     app.use(cors({

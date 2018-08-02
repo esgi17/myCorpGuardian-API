@@ -1,0 +1,1 @@
+INSERT INTO `user` (`id`, `login`, `password`, `isAdmin`, `created_at`, `updated_at`, `deleted_at`, `corp_id`) VALUES (NULL, 'A001', 'sha1$8a15ca57$1$dab66cf72484c7f2f3c2502b39854b4d29e4d9f8', '1', CURRENT_DATE(), CURRENT_DATE(), NULL, NULL);

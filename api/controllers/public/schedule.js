@@ -70,6 +70,16 @@ ScheduleController.getAll = function (id) {
     return ScheduleController.sequelize.Schedule.findAll(options);
 };
 
+ScheduleController.getByGroupDoorDay = function(group_id, door_id, day){
+  return ScheduleController.sequelize.Schedule.findAll({
+    where : {
+      door_id : door_id,
+      group_id : group_id,
+      day : day
+    }
+  })
+}
+
 
 // Export du controller
 module.exports = ScheduleController;
