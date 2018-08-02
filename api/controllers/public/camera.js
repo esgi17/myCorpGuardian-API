@@ -9,37 +9,27 @@ const CameraController = function() { };
 *  Récupération des élements en base
 **/
 CameraController.getAll = function (id) {
-      const options = {};
-      const where = {};
+    const options = {};
+    const where = {};
 
-      if( id !== undefined ) {
-          where.id = {
-              [Op.eq] : `${id}`
-          };
-      }
-      options.where = where;
-      return CameraController.sequelize.Camera.findAll(options);
-  };
-
-
-/**
-*  Retrouver une porte en base
-**/
-CameraController.find = function( id ) {
-  if ( id != undefined ){
-    return CameraController.sequelize.Camera.findById( id );
-  }
-}
+    if( id !== undefined ) {
+        where.id = {
+            [Op.eq] : `${id}`
+        };
+    }
+    options.where = where;
+    return CameraController.sequelize.Camera.findAll(options);
+};
 
 /**
 *  Creation d'un groupe
 **/
 CameraController.add = function(url, device_id ) {
-  const options = {};
-  options.url = url;
-  if (device_id !== undefined){
-    options.device_id = device_id;
-  }
+    const options = {};
+    options.url = url;
+    if (device_id !== undefined){
+        options.device_id = device_id;
+    }
     return CameraController.sequelize.Camera.create(options);
 };
 
@@ -47,11 +37,11 @@ CameraController.add = function(url, device_id ) {
 * Suppression d'un groupe
 **/
 CameraController.delete = function ( id ) {
-  return CameraController.sequelize.Camera.destroy({
-    where: {
-      id : id
-    }
-  });
+    return CameraController.sequelize.Camera.destroy({
+        where: {
+            id : id
+        }
+    });
 }
 
 /**
@@ -61,9 +51,9 @@ CameraController.update = function( id,url) {
     return CameraController.sequelize.Camera.update({
         url: url
     },{
-      where: {
-        id : id
-      }
+        where: {
+            id : id
+        }
     });
 };
 

@@ -6,20 +6,20 @@ const Op = GeneralModelIndex.sequelize.Op;
 const CorpController = function() {};
 
 CorpController.getAll = function(id) {
-      const options = {
-          include : [{
-              model:  GeneralModelIndex.User,
-              as : 'user'
-          }]
-      };
-      const where = {};
-      if( id !== undefined ) {
-          where.id = {
-              [Op.eq]: id
-          }
-      }
-      options.where = where;
-      return Corp.findAll(options);
+    const options = {
+        include : [{
+            model:  GeneralModelIndex.User,
+            as : 'user'
+        }]
+    };
+    const where = {};
+    if( id !== undefined ) {
+        where.id = {
+            [Op.eq]: id
+        }
+    }
+    options.where = where;
+    return Corp.findAll(options);
 }
 
 CorpController.update = function( id, name, db_url, db_name, db_login, db_pwd ) {
@@ -47,11 +47,11 @@ CorpController.add = function( name, db_url, db_name, db_login, db_pwd ) {
 }
 
 CorpController.delete = function(id) {
-  return Corp.destroy({
-    where: {
-      id : id
-    }
-  });
+    return Corp.destroy({
+        where: {
+            id : id
+        }
+    });
 }
 
 module.exports = CorpController;

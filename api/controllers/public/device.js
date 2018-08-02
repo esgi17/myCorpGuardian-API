@@ -13,7 +13,7 @@ DeviceController.add = function(name, ref, deviceType) {
     options.name = name;
     options.ref = ref;
     if (deviceType !== undefined){
-      options.device_type_id = deviceType;
+        options.device_type_id = deviceType;
     }
     return DeviceController.sequelize.Device.create(options);
 };
@@ -22,34 +22,35 @@ DeviceController.add = function(name, ref, deviceType) {
 * Suppression d'un Device en base
 **/
 DeviceController.delete = function(id) {
-  return DeviceController.sequelize.Device.destroy({
-    where: {
-      id : id
-    }
-  });
+    return DeviceController.sequelize.Device.destroy({
+        where: {
+            id : id
+        }
+    });
 }
+
 DeviceController.getByReference = function(ref_device){
-  const options = {
-    include: [{
-      model: DeviceController.sequelize.DeviceType,
-      as : 'deviceType'
-    }]
-  };
-  const where = {
-    ref: ref_device
-  };
-  options.where = where;
-  return DeviceController.sequelize.Device.findAll(options);
+    const options = {
+        include: [{
+            model: DeviceController.sequelize.DeviceType,
+            as : 'deviceType'
+        }]
+    };
+    const where = {
+        ref: ref_device
+    };
+    options.where = where;
+    return DeviceController.sequelize.Device.findAll(options);
 }
 /**
 *  Récupération des élements en base
 **/
 DeviceController.getAll = function (id, device_type_id) {
     const options = {
-      include: [{
-        model: DeviceController.sequelize.DeviceType,
-        as : 'deviceType'
-      }]
+        include: [{
+            model: DeviceController.sequelize.DeviceType,
+            as : 'deviceType'
+        }]
     };
     const where = {};
 
@@ -60,9 +61,9 @@ DeviceController.getAll = function (id, device_type_id) {
     }
 
     if( device_type_id !== undefined ) {
-         where.device_type_id = {
+        where.device_type_id = {
             [Op.eq] : `${device_type_id}`
-         }
+        }
     }
 
     options.where = where;

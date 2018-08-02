@@ -13,13 +13,13 @@ EventController.add = function( title, data, device_id, pass_id ) {
     options.date = new Date();
     options.title = title;
     if (data !== undefined){
-      options.data = data;
+        options.data = data;
     }
     if (device_id !== undefined){
-      options.device_id = device_id;
+        options.device_id = device_id;
     }
     if (pass_id !== undefined){
-      options.pass_id = pass_id;
+        options.pass_id = pass_id;
     }
 
     return EventController.sequelize.Event.create(options);
@@ -29,11 +29,11 @@ EventController.add = function( title, data, device_id, pass_id ) {
 * Suppression d'un Event en base
 **/
 EventController.delete = function(id) {
-  return EventController.sequelize.Event.destroy({
-    where: {
-      id : id
-    }
-  });
+    return EventController.sequelize.Event.destroy({
+        where: {
+            id : id
+        }
+    });
 }
 
 /**
@@ -41,13 +41,13 @@ EventController.delete = function(id) {
 **/
 EventController.update = function( id, date, data, device_id ) {
     return EventController.sequelize.Event.update({
-      date: date,
-      data: data,
-      device_id: device_id
+        date: date,
+        data: data,
+        device_id: device_id
     },{
-      where: {
-        id : id
-      }
+        where: {
+            id : id
+        }
     });
 };
 
@@ -56,10 +56,10 @@ EventController.update = function( id, date, data, device_id ) {
 **/
 EventController.getAll = function (idEvent, idPass, idDevice) {
     const options = {
-      include: [{
-        model: EventController.sequelize.Device,
-        as : 'device'
-      }]
+        include: [{
+            model: EventController.sequelize.Device,
+            as : 'device'
+        }]
     };
     const where = {};
 

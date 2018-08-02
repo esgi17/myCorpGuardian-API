@@ -20,10 +20,10 @@ AdminController.add = function(login, password, isAdmin, corp_id) {
 
 AdminController.exist = function (login) {
     const options = {
-      include : [{
-        model: ModelIndex.Corp,
-        as : 'corp'
-      }]
+        include : [{
+            model: ModelIndex.Corp,
+            as : 'corp'
+        }]
     }
     const where = {}
 
@@ -47,7 +47,7 @@ AdminController.verifyPassword = function (pwd, pwd1) {
 AdminController.checkToken = function (token, secret) {
     if (token) {
         try {
-          
+
             var decoded = jwt.verify(token, secret);
             return true;
         } catch (err) {

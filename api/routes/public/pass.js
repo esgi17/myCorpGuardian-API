@@ -19,31 +19,31 @@ passRouter.use(bodyParser.json());
 passRouter.get('/:id?', function(req, res) {
     const id = req.params.id;
     PassController.getAll(id)
-      .then( (pass) => {
+    .then( (pass) => {
         if (pass[0] !== undefined){
-          res.status(200).json({
-            success : true,
-            status : 200,
-            datas : pass
-          });
+            res.status(200).json({
+                success : true,
+                status : 200,
+                datas : pass
+            });
         }else{
-          res.status(404).json({
-              success : false,
-              status : 404,
-              message : "Object not found"
-          }).end();
+            res.status(404).json({
+                success : false,
+                status : 404,
+                message : "Object not found"
+            }).end();
 
         }
-      })
-      .catch( (err) => {
-          // Sinon, on renvoie un erreur systeme
-          console.error(err);
-          res.status(500).json({
-              success : false,
-              status : 500,
-              message : "500 Internal Server Error"
-          }).end();
-      });
+    })
+    .catch( (err) => {
+        // Sinon, on renvoie un erreur systeme
+        console.error(err);
+        res.status(500).json({
+            success : false,
+            status : 500,
+            message : "500 Internal Server Error"
+        }).end();
+    });
 });
 
 /**
@@ -69,31 +69,31 @@ passRouter.post('/', function(req, res) {
         return;
     }
     DeviceController.add(name, ref, 3)
-      .then((device) => {
+    .then((device) => {
         PassController.add( device.id)
-          .then((pass) => {
+        .then((pass) => {
             res.status(200).json({
                 success : true,
                 status : 200,
                 datas : pass
             });
-          }).catch( (err) => {
-              console.error(err);
-              res.status(500).json({
-                  success : false,
-                  status : 500,
-                  message : "500 Internal Server Error"
-              }).end();
-          });
-      })
-      .catch( (err) => {
-          console.error(err);
-          res.status(500).json({
-              success : false,
-              status : 500,
-              message : "500 Internal Server Error"
-          }).end();
-      });
+        }).catch( (err) => {
+            console.error(err);
+            res.status(500).json({
+                success : false,
+                status : 500,
+                message : "500 Internal Server Error"
+            }).end();
+        });
+    })
+    .catch( (err) => {
+        console.error(err);
+        res.status(500).json({
+            success : false,
+            status : 500,
+            message : "500 Internal Server Error"
+        }).end();
+    });
 });
 
 /**
@@ -112,38 +112,38 @@ passRouter.post('/', function(req, res) {
 * @apiUse error400
 */
 passRouter.delete('/:id', function (req, res) {
-  var id = req.params.id;
-  if( id === undefined) {
-      // Renvoi d'une erreur
-      res.status(400).json({
-          success : false,
-          status : 400,
-          message : "Bad Request"
-      }).end();
-      return;
-  }
-  PassController.getAll(id)
-  .then( (pass) => {
-    if (pass[0] !== undefined) {
-      DeviceController.delete(id)
-        .then(() => {
-
-      PassController.delete(pass[0].id)
-        .then( pass => {
-            res.status(200).json({
-                success : true,
-                status : 200,
-                message : "Pass deleted"
-            });
-        });
-      })
-    } else {
-      res.status(404).json({
+    var id = req.params.id;
+    if( id === undefined) {
+        // Renvoi d'une erreur
+        res.status(400).json({
             success : false,
-            status : 404,
-            message : "Object not found"
-      });
+            status : 400,
+            message : "Bad Request"
+        }).end();
+        return;
     }
+    PassController.getAll(id)
+    .then( (pass) => {
+        if (pass[0] !== undefined) {
+            DeviceController.delete(id)
+            .then(() => {
+
+                PassController.delete(pass[0].id)
+                .then( pass => {
+                    res.status(200).json({
+                        success : true,
+                        status : 200,
+                        message : "Pass deleted"
+                    });
+                });
+            })
+        } else {
+            res.status(404).json({
+                success : false,
+                status : 404,
+                message : "Object not found"
+            });
+        }
     }).catch( (err) => {
         console.error(err);
         res.status(500).json({
@@ -164,42 +164,42 @@ passRouter.delete('/:id', function (req, res) {
 * @apiUse error400
 */
 passRouter.put('/', function(req, res) {
-  const user_id = req.body.user_id;
-  const id = req.body.id;
-  if (id === undefined || user_id === undefined){
-    res.status(400).json({
-        success : false,
-        status : 400,
-        message : "Bad Request"
-    }).end();
-    return;
-  }
-  PassController.getAll(id)
-  .then( (user) => {
-    if (user[0] !== undefined) {
-      PassController.affect(id, user_id)
-      .then( user => {
-        res.status(200).json({
-            success : true,
-            status : 200,
-            message : "Pass updated"
-        });
-      });
-    } else {
-      res.status(404).json({
-          success: false,
-          status : 404,
-          message : "Object not found"
-      });
+    const user_id = req.body.user_id;
+    const id = req.body.id;
+    if (id === undefined || user_id === undefined){
+        res.status(400).json({
+            success : false,
+            status : 400,
+            message : "Bad Request"
+        }).end();
+        return;
     }
-  }).catch( (err) => {
-      console.error(err);
-      res.status(500).json({
-          success : false,
-          status : 500,
-          message : "500 Internal Server Error"
-      }).end();
-  });
+    PassController.getAll(id)
+    .then( (user) => {
+        if (user[0] !== undefined) {
+            PassController.affect(id, user_id)
+            .then( user => {
+                res.status(200).json({
+                    success : true,
+                    status : 200,
+                    message : "Pass updated"
+                });
+            });
+        } else {
+            res.status(404).json({
+                success: false,
+                status : 404,
+                message : "Object not found"
+            });
+        }
+    }).catch( (err) => {
+        console.error(err);
+        res.status(500).json({
+            success : false,
+            status : 500,
+            message : "500 Internal Server Error"
+        }).end();
+    });
 });
 
 

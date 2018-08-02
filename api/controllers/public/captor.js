@@ -12,7 +12,7 @@ CaptorController.add = function( device_id ) {
     const options = {};
 
     if (device_id !== undefined){
-      options.device_id = device_id;
+        options.device_id = device_id;
     }
     return CaptorController.sequelize.Captor.create(options);
 };
@@ -21,11 +21,11 @@ CaptorController.add = function( device_id ) {
 * Suppression d'un Captor en base
 **/
 CaptorController.delete = function(id) {
-  return CaptorController.sequelize.Captor.destroy({
-    where: {
-      id : id
-    }
-  });
+    return CaptorController.sequelize.Captor.destroy({
+        where: {
+            device_id : id
+        }
+    });
 }
 
 

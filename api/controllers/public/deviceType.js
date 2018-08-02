@@ -18,11 +18,11 @@ DeviceTypeController.add = function(name) {
 * Suppression d'un DeviceType en base
 **/
 DeviceTypeController.delete = function(id) {
-  return DeviceTypeController.sequelize.DeviceType.destroy({
-    where: {
-      id : id
-    }
-  });
+    return DeviceTypeController.sequelize.DeviceType.destroy({
+        where: {
+            id : id
+        }
+    });
 }
 
 /**
@@ -32,9 +32,9 @@ DeviceTypeController.update = function( id, name ) {
     return DeviceTypeController.sequelize.DeviceType.update({
         name: name
     },{
-      where: {
-        id : id
-      }
+        where: {
+            id : id
+        }
     });
 };
 

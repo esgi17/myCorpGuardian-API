@@ -9,32 +9,32 @@ const DoorController = function() { };
 *  Récupération des élements en base
 **/
 DoorController.getAll = function (id) {
-      const options = {};
-      const where = {};
+    const options = {};
+    const where = {};
 
-      if( id !== undefined ) {
-          where.id = {
-              [Op.eq] : `${id}`
-          };
-      }
-      options.where = where;
-      return DoorController.sequelize.Door.findAll(options);
-  };
+    if( id !== undefined ) {
+        where.id = {
+            [Op.eq] : `${id}`
+        };
+    }
+    options.where = where;
+    return DoorController.sequelize.Door.findAll(options);
+};
 
 DoorController.getByDevice = function(id_device){
-  return DoorController.sequelize.Door.findAll({
-    where : {
-      id_device: id_device
-    }
-  });
+    return DoorController.sequelize.Door.findAll({
+        where : {
+            id_device: id_device
+        }
+    });
 }
 /**
 *  Retrouver une porte en base
 **/
 DoorController.find = function( id ) {
-  if ( id != undefined ){
-    return DoorController.sequelize.Door.findById( id );
-  }
+    if ( id != undefined ){
+        return DoorController.sequelize.Door.findById( id );
+    }
 }
 
 /**
@@ -43,7 +43,7 @@ DoorController.find = function( id ) {
 DoorController.add = function( device_id) {
     const options ={};
     if (device_id !== undefined){
-      options.device_id = device_id
+        options.device_id = device_id
     }
     return DoorController.sequelize.Door.create(options);
 };
@@ -52,11 +52,11 @@ DoorController.add = function( device_id) {
 * Suppression d'un groupe
 **/
 DoorController.delete = function ( id ) {
-  return DoorController.sequelize.Door.destroy({
-    where: {
-      device_id : id
-    }
-  });
+    return DoorController.sequelize.Door.destroy({
+        where: {
+            device_id : id
+        }
+    });
 }
 
 

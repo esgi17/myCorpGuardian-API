@@ -17,31 +17,31 @@ doorRouter.use(bodyParser.json());
 doorRouter.get('/:id?', function(req, res) {
     const id = req.params.id;
     DoorController.getAll(id)
-      .then( (door) => {
+    .then( (door) => {
         if (door[0] !== undefined){
 
-          // Si la methode ne renvoie pas d'erreur, on renvoie le résultat
-          res.status(200).json({
-            success : true,
-            status : 200,
-            datas : door
-          });
+            // Si la methode ne renvoie pas d'erreur, on renvoie le résultat
+            res.status(200).json({
+                success : true,
+                status : 200,
+                datas : door
+            });
         }else{
-          res.status(404).json({
-              success : false,
-              status : 404,
-              message : "Object not found"
-          }).end();
+            res.status(404).json({
+                success : false,
+                status : 404,
+                message : "Object not found"
+            }).end();
         }
-      })
-      .catch( (err) => {
-          console.error(err);
-          res.status(500).json({
-              success : false,
-              status : 500,
-              message : "500 Internal Server Error"
-          }).end();
-      });
+    })
+    .catch( (err) => {
+        console.error(err);
+        res.status(500).json({
+            success : false,
+            status : 500,
+            message : "500 Internal Server Error"
+        }).end();
+    });
 });
 
 /**
@@ -57,42 +57,42 @@ doorRouter.post('/', function(req, res) {
     const name = req.body.name;
     const ref = req.body.ref;
     if (name === undefined || ref === undefined){
-      // Renvoi d'une erreur
-      res.status(400).json({
-          success : false,
-          status : 400,
-          message : "Bad Request"
-      }).end();
-      return;
+        // Renvoi d'une erreur
+        res.status(400).json({
+            success : false,
+            status : 400,
+            message : "Bad Request"
+        }).end();
+        return;
     }
     DeviceController.add(name, ref, 1)
-      .then((device) => {
+    .then((device) => {
         DoorController.add(device.id)
-          .then((door) => {
+        .then((door) => {
             res.status(200).json({
-              success : true,
-              status : 200,
-              datas : door
+                success : true,
+                status : 200,
+                datas : door
             });
-          }).catch( (err) => {
-              // Sinon, on renvoie un erreur systeme
-              console.error(err);
-              res.status(500).json({
-                  success : false,
-                  status : 500,
-                  message : "500 Internal Server Error"
-              }).end();
-      })
-      .catch( (err) => {
-        // Sinon, on renvoie un erreur systeme
-        console.error(err);
-        res.status(500).json({
-            success : false,
-            status : 500,
-            message : "500 Internal Server Error"
-        }).end();
+        }).catch( (err) => {
+            // Sinon, on renvoie un erreur systeme
+            console.error(err);
+            res.status(500).json({
+                success : false,
+                status : 500,
+                message : "500 Internal Server Error"
+            }).end();
+        })
+        .catch( (err) => {
+            // Sinon, on renvoie un erreur systeme
+            console.error(err);
+            res.status(500).json({
+                success : false,
+                status : 500,
+                message : "500 Internal Server Error"
+            }).end();
+        });
     });
-});
 });
 
 /**
@@ -111,38 +111,38 @@ doorRouter.post('/', function(req, res) {
 * @apiUse error400
 */
 doorRouter.delete('/:id', function (req, res) {
-  var id = req.params.id;
-  if( id === undefined) {
-      // Renvoi d'une erreur
-      res.status(400).json({
-          success : false,
-          status : 400,
-          message : "Bad Request"
-      }).end();
-      return;
-  }
-  DeviceController.getAll(id)
-  .then( (device) => {
-    if (device[0] !== undefined) {
-      DeviceController.delete(id)
-        .then(() => {
-
-      DoorController.delete(delete[0].id)
-        .then( (door) => {
-            res.status(200).json({
-                success : true,
-                status : 200,
-                message : "Door deleted"
-            });
-        });
-      })
-    } else {
-      res.status(404).json({
-          success : false,
-          status : 404,
-          message : "Object not found"
-      });
+    var id = req.params.id;
+    if( id === undefined) {
+        // Renvoi d'une erreur
+        res.status(400).json({
+            success : false,
+            status : 400,
+            message : "Bad Request"
+        }).end();
+        return;
     }
+    DeviceController.getAll(id)
+    .then( (device) => {
+        if (device[0] !== undefined) {
+            DeviceController.delete(id)
+            .then(() => {
+
+                DoorController.delete(device[0].id)
+                .then( (door) => {
+                    res.status(200).json({
+                        success : true,
+                        status : 200,
+                        message : "Door deleted"
+                    });
+                });
+            })
+        } else {
+            res.status(404).json({
+                success : false,
+                status : 404,
+                message : "Object not found"
+            });
+        }
     }).catch( (err) => {
         console.error(err);
         res.status(500).json({
