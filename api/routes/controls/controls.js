@@ -191,19 +191,19 @@ controlsRouter.post('/', function(req, res){
   const thirdDevice = req.body.thirdDevice || "Pass";
   const fourthDevice = req.body.fourthDevice || "Camera";
 
-  DeviceController.add("DoorTest1", "BetonArméMaggle", 1)
+  DeviceController.add("DoorTest1", "BetonArmé", 1)
   .then((device) => {
     DoorController.add(device.id)
     .then(() => {
-      DeviceController.add("DoorTest2", "XDoorPredator", 1)
+      DeviceController.add("DoorTest2", "Door", 1)
       .then((device) => {
         DoorController.add(device.id)
         .then(() => {
-          DeviceController.add("CaptorTest1", "XxDetectorxX", 2)
+          DeviceController.add("CaptorTest1", "Detector", 2)
           .then((device) => {
             CaptorController.add(device.id)
             .then(() => {
-              DeviceController.add("CaptorTest2", "XxDetectorTooxX", 2)
+              DeviceController.add("CaptorTest2", "DetectorToo", 2)
               .then((device) => {
                 CaptorController.add(device.id)
                 .then(() => {

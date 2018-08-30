@@ -21,11 +21,11 @@ ScheduleController.add = function( h_start, h_stop, day, door_id, group_id ) {
 * Suppression d'un Schedule en base
 **/
 ScheduleController.delete = function(id) {
-  return ScheduleController.sequelize.Schedule.destroy({
-    where: {
-      id : id
-    }
-  });
+    return ScheduleController.sequelize.Schedule.destroy({
+        where: {
+            id : id
+        }
+    });
 }
 
 /**
@@ -39,9 +39,9 @@ ScheduleController.update = function( id, h_start, h_stop, day, door_id, group_i
         door_id: door_id,
         group_id: group_id
     },{
-      where: {
-        id : id
-      }
+        where: {
+            id : id
+        }
     });
 };
 
@@ -50,14 +50,14 @@ ScheduleController.update = function( id, h_start, h_stop, day, door_id, group_i
 **/
 ScheduleController.getAll = function (id) {
     const options = {
-      include: [{
-        model: ScheduleController.sequelize.Group,
-        as : 'group'
-      },
-      {
-        model: ScheduleController.sequelize.Door,
-        as : 'door'
-      }]
+        include: [{
+            model: ScheduleController.sequelize.Group,
+            as : 'group'
+        },
+        {
+            model: ScheduleController.sequelize.Door,
+            as : 'door'
+        }]
     };
     const where = {};
 
@@ -71,13 +71,13 @@ ScheduleController.getAll = function (id) {
 };
 
 ScheduleController.getByGroupDoorDay = function(group_id, door_id, day){
-  return ScheduleController.sequelize.Schedule.findAll({
-    where : {
-      door_id : door_id,
-      group_id : group_id,
-      day : day
-    }
-  })
+    return ScheduleController.sequelize.Schedule.findAll({
+        where : {
+            door_id : door_id,
+            group_id : group_id,
+            day : day
+        }
+    })
 }
 
 

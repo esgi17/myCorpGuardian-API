@@ -7,23 +7,23 @@ const StateController = function() {};
 
 StateController.add = function(state){
     return StateController.sequelize.State.create({
-      state: state
+        state: state
     });
 };
 
 StateController.update = function(state){
     return StateController.sequelize.State.update({
-      state: state
+        state: state
     },{
-      where : {
-        id: 1
-      }
+        where : {
+            id: 1
+        }
     });
 };
 
 StateController.getAll = function(id){
-  const options = {};
-  const where = {};
+    const options = {};
+    const where = {};
     if( id !== undefined ) {
         where.id = {
             [Op.eq] : `${id}`

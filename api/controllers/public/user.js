@@ -19,11 +19,11 @@ UserController.add = function(firstname, lastname, job, group_id) {
 * Suppression d'un User en base
 **/
 UserController.delete = function(id) {
-  return UserController.sequelize.User.destroy({
-    where: {
-      id : id
-    }
-  });
+    return UserController.sequelize.User.destroy({
+        where: {
+            id : id
+        }
+    });
 }
 
 /**
@@ -37,7 +37,7 @@ UserController.update = function(id, firstname, lastname, job, group_id) {
         group_id: group_id
     },{
         where: {
-          id : id
+            id : id
         }
     });
 };
@@ -58,10 +58,10 @@ UserController.affectGroup = function(group_id, user_id) {
 UserController.getAll = function (id) {
 
     const options = {
-      include: [{
-        model: UserController.sequelize.Group,
-        as : 'group'
-      }]
+        include: [{
+            model: UserController.sequelize.Group,
+            as : 'group'
+        }]
     };
     const where = {};
 
@@ -76,7 +76,7 @@ UserController.getAll = function (id) {
 
 UserController.disconnect = function() {
 
-//      UserController.sequelize.close();
+    //      UserController.sequelize.close();
 
 }
 

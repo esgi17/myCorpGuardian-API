@@ -7,100 +7,100 @@ const stateRouter = express.Router();
 stateRouter.use(bodyParser.json());
 
 stateRouter.get('/:id?', function(req,res){
-  const id = req.params.id || 1;
-  StateController.getAll(id)
+    const id = req.params.id || 1;
+    StateController.getAll(id)
     .then((state) => {
-      if (state[0] !== undefined){
-        res.status(200).json({
-          success : true,
-          status : 200,
-          datas: state
-        });
-      }else{
-        res.status(404).json({
-          success : false,
-          status : 404,
-          message : "Object not found"
-        }).end();
-        return;
-      }
+        if (state[0] !== undefined){
+            res.status(200).json({
+                success : true,
+                status : 200,
+                datas: state
+            });
+        }else{
+            res.status(404).json({
+                success : false,
+                status : 404,
+                message : "Object not found"
+            }).end();
+            return;
+        }
     }).catch((err) => {
-      console.error(err);
-      res.status(500).json({
-        success : false,
-        status : 500,
-        message : "500 Internal Server Error"
-      }).end()
-      return;
+        console.error(err);
+        res.status(500).json({
+            success : false,
+            status : 500,
+            message : "500 Internal Server Error"
+        }).end()
+        return;
     });
 });
 
 stateRouter.post('/', function(req,res) {
-  const state = req.body.state;
+    const state = req.body.state;
 
-  if (state === undefined){
-    res.status(400).json({
-      success : false,
-      status : 400,
-      message : "Bad request"
-    }).end();
-    return;
-  }
-  StateController.add(state)
-    .then((state) => {
-      res.status(200).json({
-        success: true,
-        status: 200,
-        datas: state
-    });
-  }).catch((err) => {
-    console.error(err);
-    res.status(500).json({
-      success: false,
-      status: 500,
-      message: "500 Internal Server Error"
-    }).end();
-  });
-});
-
-  stateRouter.put('/', function(req,res){
-    let state = req.body.state;
     if (state === undefined){
-      res.status(400).json({
-        success: false,
-        status: 400,
-        message: "Bad Request"
-      }).end();
-      return;
+        res.status(400).json({
+            success : false,
+            status : 400,
+            message : "Bad request"
+        }).end();
+        return;
     }
-    if (state === "true"){
-      state = 1;
-    }
-    else if (state === "false"){
-      state = 0;
-    }else{
-      res.status(400).json({
-        success: false,
-        status: 400,
-        message: "Bad Request"
-      }).end();
-      return;
-    }
-    StateController.update(state)
-      .then((state) => {
+    StateController.add(state)
+    .then((state) => {
         res.status(200).json({
-          success: true,
-          status: 200,
-          datas : state
-        })
-      }).catch((err) =>{
+            success: true,
+            status: 200,
+            datas: state
+        });
+    }).catch((err) => {
         console.error(err);
         res.status(500).json({
-          success: false,
-          status: 500,
-          message: "500 Internal Server Error"
+            success: false,
+            status: 500,
+            message: "500 Internal Server Error"
         }).end();
-      });
-  });
+    });
+});
 
-  module.exports = stateRouter;
+stateRouter.put('/', function(req,res){
+    let state = req.body.state;
+    if (state === undefined){
+        res.status(400).json({
+            success: false,
+            status: 400,
+            message: "Bad Request"
+        }).end();
+        return;
+    }
+    if (state === "true"){
+        state = 1;
+    }
+    else if (state === "false"){
+        state = 0;
+    }else{
+        res.status(400).json({
+            success: false,
+            status: 400,
+            message: "Bad Request"
+        }).end();
+        return;
+    }
+    StateController.update(state)
+    .then((state) => {
+        res.status(200).json({
+            success: true,
+            status: 200,
+            datas : state
+        })
+    }).catch((err) =>{
+        console.error(err);
+        res.status(500).json({
+            success: false,
+            status: 500,
+            message: "500 Internal Server Error"
+        }).end();
+    });
+});
+
+module.exports = stateRouter;
