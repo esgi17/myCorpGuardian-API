@@ -8,12 +8,18 @@ const DeviceController = function() { };
 /**
 *  Creation d'un Device en base
 **/
-DeviceController.add = function(name, ref, deviceType) {
+DeviceController.add = function(name, ref, deviceType, x, y) {
     const options = {};
     options.name = name;
     options.ref = ref;
     if (deviceType !== undefined){
         options.device_type_id = deviceType;
+    }
+    if (x !== undefined){
+        options.x = x;
+    }
+    if (y !== undefined){
+        options.y = y;
     }
     return DeviceController.sequelize.Device.create(options);
 };
@@ -29,15 +35,11 @@ DeviceController.delete = function(id) {
     });
 }
 
-DeviceController.getByReference = function(ref_device){
+DeviceController.getByName = function(name){
     const options = {
-        include: [{
-            model: DeviceController.sequelize.DeviceType,
-            as : 'deviceType'
-        }]
     };
     const where = {
-        ref: ref_device
+        name: name
     };
     options.where = where;
     return DeviceController.sequelize.Device.findAll(options);
@@ -45,6 +47,18 @@ DeviceController.getByReference = function(ref_device){
 /**
 *  Récupération des élements en base
 **/
+
+DeviceController.update = function(name, ref, x, y){
+    return DeviceController.sequelize.Device.update({
+        ref: ref,
+        x: x,
+        y: y
+    },{
+        where: {
+            name: name
+        }
+    });
+}
 DeviceController.getAll = function (id, device_type_id) {
     const options = {
         include: [{

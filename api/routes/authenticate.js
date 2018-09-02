@@ -20,6 +20,7 @@ const DeviceController = pControllers.DeviceController;
 const CaptorController = pControllers.CaptorController;
 const CameraController = pControllers.CameraController;
 const AdminController = controllers.AdminController;
+const WallController = pControllers.WallController;
 const ModelIndex = require('../models/public');
 
 
@@ -87,7 +88,7 @@ loginRouter.post('/', function(req,res) {
                             DeviceController.sequelize = sequelize;
                             CaptorController.sequelize = sequelize;
                             CameraController.sequelize = sequelize;
-
+                            WallController.sequelize = sequelize;
                             AdminController.isAdmin = false;
                             const payload = {
                                 admin : user.admin

@@ -11,6 +11,7 @@ module.exports = {
         device_path : '../../controllers/public/device',
         captor_path : '../../controllers/public/captor',
         camera_path : '../../controllers/public/camera',
-        state_path : '../../controllers/public/state'
+        state_path : '../../controllers/public/state',
+        wall_path : '../../controllers/public/wall'
     }
 }

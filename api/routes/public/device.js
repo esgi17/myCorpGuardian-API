@@ -52,10 +52,53 @@ deviceRouter.get('/:id?', function(req, res) {
 * @apiUse error500
 * @apiUse error404
 */
+deviceRouter.put('/', function(req, res){
+    const name = req.body.name;
+    const ref = req.body.ref;
+    const x = req.body.x;
+    const y = req.body.y;
+    if (name === undefined ){
+        res.status(400).json({
+            success: false,
+            status: 400,
+            message: "Bad request"
+        }).end();
+        return;
+    }
+    DeviceController.getByName(name)
+        .then((device) => {
+            if (device[0] !== undefined){
+                DeviceController.update(name, ref || device[0].ref, x || device[0].x, y || device[0].y)
+                    .then((rep) => {
+                        res.status(200).json({
+                            success: true,
+                            status: 200,
+                            message: "Device Updated"
+                        });
+                    });
+            }else{
+                res.status(404).json({
+                    success: false,
+                    status: 404,
+                    message : "Object not found"
+                });
+            }
+        }).catch((err) => {
+            console.error(err);
+            res.status(500).json({
+                success: false,
+                status: 500,
+                message: "500 Internal Server Error"
+            }).end();
+        });
+});
+
 deviceRouter.post('/', function(req, res) {
     const name = req.body.name;
     const ref = req.body.ref;
     const deviceType = req.body.deviceType;
+    const x = req.body.x;
+    const y = req.body.y;
     if (name === undefined || ref === undefined){
       // Renvoi d'une erreur
       res.status(400).json({
@@ -65,7 +108,7 @@ deviceRouter.post('/', function(req, res) {
       }).end();
       return;
     }
-    DeviceController.add(name, ref, deviceType)
+    DeviceController.add(name, ref, deviceType, x, y)
       .then( (device) => {
         // Si la methode ne renvoie pas d'erreur, on renvoie le résultat
         res.status(200).json({

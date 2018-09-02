@@ -8,12 +8,10 @@ const Op = Sequelize.Op;
 const basename = path.basename(module.filename);
 
 const GeneralModelIndex = {};
-console.log(basename);
 GeneralModelIndex.getModel = function (modelName) {
     return this[modelName];
 };
 
-console.log(config);
 
 const sequelize = new Sequelize(config.general_bdd.dbname, config.general_bdd.user, config.general_bdd.password, {
     host: config.general_bdd.host,
@@ -25,7 +23,7 @@ const sequelize = new Sequelize(config.general_bdd.dbname, config.general_bdd.us
 // LOAD MODELS
 fs.readdirSync(__dirname)
     .filter((file) => {
-      
+
         return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js');
     })
     .forEach((file) => {

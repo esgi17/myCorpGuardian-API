@@ -1,5 +1,6 @@
 module.exports = {
   UserController: require('./user'),
+  WallController: require('./wall'),
   PassController: require('./pass'),
   CaptorController: require('./captor'),
   GroupController: require('./group'),

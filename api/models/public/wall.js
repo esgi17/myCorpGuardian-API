@@ -1,27 +1,25 @@
-module.exports = function (sequelize, DataTypes) {
-    const Device = sequelize.define('Device', {
+module.exports = function(sequelize, DataTypes){
+    const Wall = sequelize.define('Wall', {
         id : {
             type: DataTypes.BIGINT,
             primaryKey: true,
             autoIncrement: true
         },
-        name: {
+        x1: {
             type: DataTypes.STRING,
             allowNull: false
         },
-        ref: {
+        x2: {
             type: DataTypes.STRING,
             allowNull: false
         },
-        x: {
+        y1: {
             type: DataTypes.STRING,
-            allowNull: false,
-            defaultValue: '-10'
+            allowNull: false
         },
-        y: {
+        y2: {
             type: DataTypes.STRING,
-            allowNull: false,
-            defaultValue: '-10'
+            allowNull: false
         }
     },
     {
@@ -29,14 +27,5 @@ module.exports = function (sequelize, DataTypes) {
         underscored: true,
         freezeTableName: true
     });
-    Device.associate = _associate;
-    return Device;
-}
-
-// INTERNAL
-
-function _associate(models) {
-  models.Device.belongsTo(models.DeviceType, {
-    as : 'deviceType'
-  });
+    return Wall;
 }

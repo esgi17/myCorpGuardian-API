@@ -48,6 +48,7 @@ class ModelIndex {
             .forEach((file) => {
                 const model = this.sequelize['import'](path.join(__dirname, file));
                 this.sequelize[model.name] = model;
+                
             });
 
         // ASSOCIATE MODELS
