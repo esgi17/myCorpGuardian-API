@@ -1,0 +1,17 @@
+PLUGIN : 
+
+GET 	localhost:3000/plugin/$id
+PUT 	localhost:3000/plugin/$id 	AVEC "name" en body
+POST 	localhost:3000/plugin/		AVEC "name" en body
+DELETE	localhost:3000/plugin/$id
+
+PLUGINASSOCIATION : 
+
+GET	localhost:3000/pluginAssociation/
+	localhost:3000/pluginAssociation/$id
+	localhost:3000/pluginAssociation/?corp_id=2
+	localhost:3000/pluginAssociation/?plugin_id=1&corp_id=2
+PUT 	localhost:3000/pluginAssociation/$id			AVEC "right", "installed", "corp_id", "plugin_id" en body (non obligatoire)
+(corp_id et plugin_id existant)
+POST 	localhost:3000/pluginAssociation/			AVEC "right", "installed", "corp_id", "plugin_id" en body
+DELETE	localhost:3000/pluginAssociation/$id
