@@ -1,4 +1,6 @@
 module.exports = {
     AdminController : require('./admin'),
-    CorpController : require('./corp')
+    CorpController : require('./corp'),
+    PluginController : require('./plugin'),
+    PluginAssociationController : require('./pluginAssociation')
 }

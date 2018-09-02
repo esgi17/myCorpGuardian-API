@@ -42,4 +42,7 @@ function _associate(models) {
     models.Corp.hasMany(models.User, {
         as : 'user'
     });
+    models.Corp.hasMany(models.PluginAssociation, {
+        as: 'pluginAssociation'
+    });
 }

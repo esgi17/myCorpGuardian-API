@@ -42,7 +42,6 @@ controlsRouter.get('/', function(req, res) {
   const door_id = req.query.door_id;
   const now  = new Date();
   let day = now.getDay();
-  //const date = new Date('01 Jan 2000 ' + now.getHours().toString() + ':' + now.getMinutes().toString() + ':' + now.getSeconds().toString() + ' GMT');
   const date = new Date(Date.UTC(00, 0, 1, now.getHours(), now.getMinutes(), now.getSeconds(), 0));
   if( ref_device === undefined || door_id === undefined ) {
     res.status(400).json({
@@ -60,7 +59,6 @@ controlsRouter.get('/', function(req, res) {
         if(pass[0] !== undefined){
           UserController.getAll(pass[0].dataValues.user_id)
           .then((user) => {
-
             if(user[0] !== undefined){
               if (now.getDay() === 0){
                 day = 7;
