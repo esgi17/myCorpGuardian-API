@@ -26,9 +26,9 @@ scheduleRouter.get('/:id?', function(req, res) {
                 datas : schedule
             });
         }else{
-            res.status(404).json({
-                success : false,
-                status : 404,
+            res.status(204).json({
+                success : true,
+                status : 204,
                 message : "Object not found"
             }).end();
         }
@@ -49,7 +49,7 @@ scheduleRouter.get('/:id?', function(req, res) {
 * @apiUse scheduleExample
 * @apiUse scheduleCreated
 * @apiUse error500
-* @apiUse error404
+* @apiUse error204
 * @apiUse error400
 */
 scheduleRouter.post('/', function(req, res) {
@@ -99,7 +99,7 @@ scheduleRouter.post('/', function(req, res) {
 *       "message": "Schedule deleted"
 *     }
 * @apiUse error500
-* @apiUse error404
+* @apiUse error204
 * @apiUse error400
 */
 scheduleRouter.delete('/:id', function (req, res) {
@@ -124,9 +124,9 @@ scheduleRouter.delete('/:id', function (req, res) {
                 });
             });
         } else {
-            res.status(404).json({
-                success : false,
-                status : 404,
+            res.status(204).json({
+                success : true,
+                status : 204,
                 message : "Object not found"
             }).end();
         }
@@ -146,7 +146,7 @@ scheduleRouter.delete('/:id', function (req, res) {
 * @apiUse scheduleExample
 * @apiUse scheduleCreated
 * @apiUse error500
-* @apiUse error404
+* @apiUse error204
 * @apiUse error400
 */
 scheduleRouter.put('/', function(req, res) {
@@ -178,9 +178,9 @@ scheduleRouter.put('/', function(req, res) {
                     });
                 });
             } else {
-                res.status(404).json({
-                    success: false,
-                    status : 404,
+                res.status(204).json({
+                    success: true,
+                    status : 204,
                     message : "Object not found"
                 });
             }

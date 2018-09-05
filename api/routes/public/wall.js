@@ -18,9 +18,9 @@ wallRouter.get('/:id?', function(req, res){
                     datas: wall
                 });
             }else{
-                res.status(404).json({
-                    success : false,
-                    status: 404,
+                res.status(204).json({
+                    success : true,
+                    status: 204,
                     message: "Object not found"
                 }).end();
                 return;
@@ -36,12 +36,13 @@ wallRouter.get('/:id?', function(req, res){
 });
 
 wallRouter.post('/', function(req, res){
+    const name = req.body.name;
     const x1 = req.body.x1 || "-10";
     const x2 = req.body.x2 || "-10";
     const y1 = req.body.y1 || "-10";
     const y2 = req.body.y2 || "-10";
 
-    if (x1 === undefined || x2 === undefined || y1 === undefined|| y2 === undefined){
+    if (name === undefined || x1 === undefined || x2 === undefined || y1 === undefined|| y2 === undefined){
         res.status(400).json({
             success : false,
             status: 400,
@@ -49,7 +50,7 @@ wallRouter.post('/', function(req, res){
         }).end();
         return;
     }
-    WallController.add(x1, x2, y1, y2)
+    WallController.add(name, x1, x2, y1, y2)
         .then((wall) => {
             res.status(200).json({
                 success: true,
@@ -66,9 +67,9 @@ wallRouter.post('/', function(req, res){
         });
 });
 
-wallRouter.delete('/:id', function(req, res){
-    let id = req.params.id;
-    if (id === undefined){
+wallRouter.delete('/:name', function(req, res){
+    let name = req.params.name;
+    if (name === undefined){
         res.status(400).json({
             success: false,
             status : 400,
@@ -76,10 +77,10 @@ wallRouter.delete('/:id', function(req, res){
         }).end();
         return;
     }
-    WallController.getAll(id)
+    WallController.getByName(name)
         .then((wall) => {
             if (wall[0] !== undefined){
-                WallController.delete(id)
+                WallController.delete(wall[0].id)
                     .then((wall)=> {
 
                     res.status(200).json({
@@ -89,9 +90,9 @@ wallRouter.delete('/:id', function(req, res){
                     });
                 });
             }else{
-                res.status(404).json({
-                    success: false,
-                    status: 404,
+                res.status(204).json({
+                    success: true,
+                    status: 204,
                     message: "Object not found"
                 });
             }
@@ -107,6 +108,7 @@ wallRouter.delete('/:id', function(req, res){
 
 wallRouter.put('/', function(req, res){
     const id = req.body.id;
+    const name = req.body.name;
     const x1 = req.body.x1;
     const x2 = req.body.x2;
     const y1 = req.body.y1;
@@ -123,7 +125,7 @@ wallRouter.put('/', function(req, res){
     WallController.getAll(id)
         .then((wall) => {
             if (wall[0] !== undefined){
-                WallController.update(id, x1 || wall[0].x1, x2 || wall[0].x2, y1 || wall[0].y1, y2 || wall[0].y2)
+                WallController.update(id, name || wall[0].name, x1 || wall[0].x1, x2 || wall[0].x2, y1 || wall[0].y1, y2 || wall[0].y2)
                     .then((rep) => {
                         res.status(200).json({
                             success: true,
@@ -132,9 +134,9 @@ wallRouter.put('/', function(req, res){
                         });
                     });
             }else{
-                res.status(404).json({
-                    success: false,
-                    status : 404,
+                res.status(204).json({
+                    success: true,
+                    status : 204,
                     message: "Object not found"
                 }).end();
                 return;

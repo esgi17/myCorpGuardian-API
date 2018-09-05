@@ -5,8 +5,9 @@ const Op = Sequelize.Op;
 
 const WallController = function () {};
 
-WallController.add = function(x1, x2, y1, y2){
+WallController.add = function(name, x1, x2, y1, y2){
     return WallController.sequelize.Wall.create({
+        name: name,
         x1: x1,
         x2: x2,
         y1: y1,
@@ -22,8 +23,9 @@ WallController.delete = function(id){
     });
 }
 
-WallController.update = function(id, x1, x2, y1, y2){
+WallController.update = function(id, name, x1, x2, y1, y2){
     return WallController.sequelize.Wall.update({
+        name: name,
         x1: x1,
         x2: x2,
         y1: y1,
@@ -35,6 +37,18 @@ WallController.update = function(id, x1, x2, y1, y2){
         }
     });
 }
+WallController.getByName = function(name){
+    const options = {};
+    const where = {};
+
+    if (name !== undefined){
+        where.name = {
+            [Op.eq] : `${name}`
+        };
+    }
+    options.where = where;
+    return WallController.sequelize.Wall.findAll(options);
+};
 
 WallController.getAll = function(id){
     const options = {};

@@ -23,9 +23,9 @@ groupRouter.get('/:id?', function(req, res) {
                 datas : group
             });
         }else{
-            res.status(404).json({
-                success : false,
-                status : 404,
+            res.status(204).json({
+                success : true,
+                status : 204,
                 message : "Object not found"
             }).end();
         }
@@ -101,9 +101,9 @@ groupRouter.delete('/:id', function (req, res) {
                 });
             });
         } else {
-            res.status(404).json({
-                success : false,
-                status : 404,
+            res.status(204).json({
+                success : true,
+                status : 204,
                 message : "Object not found"
             });
         }
@@ -140,9 +140,9 @@ groupRouter.put('/', function(req,res) {
                 });
             });
         }else{
-            res.status(404).json({
-                success : false,
-                status : 404,
+            res.status(204).json({
+                success : true,
+                status : 204,
                 message : "Object not found"
             });
         }

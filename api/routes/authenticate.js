@@ -127,7 +127,7 @@ loginRouter.post('/', function(req,res) {
     * Middleware de vérification de l'authentification
     * <string> token
     */
-    loginRouter.use(function(req,res,next) {
+    /*loginRouter.use(function(req,res,next) {
         // Vérification du token
         var token = req.body.token || req.query.token || req.headers['authorization'];
         if (AdminController.checkToken(token, config.secret_user)) {
@@ -143,7 +143,7 @@ loginRouter.post('/', function(req,res) {
                 message: 'No token or bad token provided.'
             });
         }
-    });
+    });*/
 
 
     loginRouter.get('/logout', function(req, res) {

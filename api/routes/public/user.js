@@ -13,7 +13,7 @@ userRouter.use(bodyParser.json());
 * @apiUse searchById
 * @apiUse userCreated
 * @apiUse error500
-* @apiUse error404
+* @apiUse error204
 */
 userRouter.get('/:id?', function(req, res) {
     // Récupération des parametres
@@ -30,9 +30,9 @@ userRouter.get('/:id?', function(req, res) {
                 datas : user
             });
         }else{
-            res.status(404).json({
-                success : false,
-                status : 404,
+            res.status(204).json({
+                success : true,
+                status : 204,
                 message : "Object not found"
             }).end();
         }
@@ -54,7 +54,7 @@ userRouter.get('/:id?', function(req, res) {
 * @apiUse userExample
 * @apiUse userCreated
 * @apiUse error500
-* @apiUse error404
+* @apiUse error204
 * @apiUse error400
 */
 userRouter.post('/', function(req, res) {
@@ -106,7 +106,7 @@ userRouter.post('/', function(req, res) {
 *       "message": "User deleted"
 *     }
 * @apiUse error500
-* @apiUse error404
+* @apiUse error204
 * @apiUse error400
 */
 userRouter.delete('/:id', function (req, res) {
@@ -138,9 +138,9 @@ userRouter.delete('/:id', function (req, res) {
             });
             // Si la methode renvoie un objet undefined, on renvoie une erreur
         } else {
-            res.status(404).json({
-                success : false,
-                status : 404,
+            res.status(204).json({
+                success : true,
+                status : 204,
                 message : "Object not found"
             });
         }
@@ -160,7 +160,7 @@ userRouter.delete('/:id', function (req, res) {
 * @apiUse userExample
 * @apiUse userCreated
 * @apiUse error500
-* @apiUse error404
+* @apiUse error204
 * @apiUse error400
 */
 userRouter.put('/', function(req, res) {
@@ -191,9 +191,9 @@ userRouter.put('/', function(req, res) {
                 });
             });
         } else {
-            res.status(404).json({
-                success: false,
-                status : 404,
+            res.status(204).json({
+                success: true,
+                status : 204,
                 message : "Object not found"
             });
         }
@@ -231,9 +231,9 @@ userRouter.put('/attribute_group', function(req, res) {
                 });
             });
         } else {
-            res.status(404).json({
-                success: false,
-                status : 404,
+            res.status(204).json({
+                success: true,
+                status : 204,
                 message : "Object not found"
             });
         }

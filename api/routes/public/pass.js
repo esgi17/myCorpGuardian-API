@@ -14,7 +14,7 @@ passRouter.use(bodyParser.json());
 * @apiUse searchById
 * @apiUse passCreated
 * @apiUse error500
-* @apiUse error404
+* @apiUse error204
 */
 passRouter.get('/:id?', function(req, res) {
     const id = req.params.id;
@@ -27,9 +27,9 @@ passRouter.get('/:id?', function(req, res) {
                 datas : pass
             });
         }else{
-            res.status(404).json({
-                success : false,
-                status : 404,
+            res.status(204).json({
+                success : true,
+                status : 204,
                 message : "Object not found"
             }).end();
 
@@ -52,7 +52,7 @@ passRouter.get('/:id?', function(req, res) {
 * @apiUse passExample
 * @apiUse passCreated
 * @apiUse error500
-* @apiUse error404
+* @apiUse error204
 * @apiUse error400
 */
 passRouter.post('/', function(req, res) {
@@ -108,7 +108,7 @@ passRouter.post('/', function(req, res) {
 *       "message": "Pass deleted"
 *     }
 * @apiUse error500
-* @apiUse error404
+* @apiUse error204
 * @apiUse error400
 */
 passRouter.delete('/:id', function (req, res) {
@@ -138,9 +138,9 @@ passRouter.delete('/:id', function (req, res) {
                 });
             })
         } else {
-            res.status(404).json({
-                success : false,
-                status : 404,
+            res.status(204).json({
+                success : true,
+                status : 204,
                 message : "Object not found"
             });
         }
@@ -160,7 +160,7 @@ passRouter.delete('/:id', function (req, res) {
 * @apiUse passExample
 * @apiUse passCreated
 * @apiUse error500
-* @apiUse error404
+* @apiUse error204
 * @apiUse error400
 */
 passRouter.put('/', function(req, res) {
@@ -186,9 +186,9 @@ passRouter.put('/', function(req, res) {
                 });
             });
         } else {
-            res.status(404).json({
-                success: false,
-                status : 404,
+            res.status(204).json({
+                success: true,
+                status : 204,
                 message : "Object not found"
             });
         }
