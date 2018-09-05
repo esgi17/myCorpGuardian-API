@@ -27,9 +27,9 @@ deviceTypeRouter.get('/:id?', function(req, res) {
             datas : deviceType
           });
         }else{
-          res.status(204).json({
+          res.status(206).json({
               success : true,
-              status : 204,
+              status : 206,
               message : "Object not found"
           }).end();
         }
@@ -50,7 +50,7 @@ deviceTypeRouter.get('/:id?', function(req, res) {
 * @apiUse deviceTypeExample
 * @apiUse deviceTypeCreated
 * @apiUse error500
-* @apiUse error204
+* @apiUse error206
 * @apiUse error400
 */
 deviceTypeRouter.post('/', function(req, res) {
@@ -96,7 +96,7 @@ deviceTypeRouter.post('/', function(req, res) {
 *       "message": "DeviceType deleted"
 *     }
 * @apiUse error500
-* @apiUse error204
+* @apiUse error206
 * @apiUse error400
 */
 deviceTypeRouter.delete('/:id', function (req, res) {
@@ -122,9 +122,9 @@ deviceTypeRouter.delete('/:id', function (req, res) {
           });
         });
     } else {
-      res.status(204).json({
+      res.status(206).json({
           success : true,
-          status : 204,
+          status : 206,
           message : "Object not found"
       }).end();
     }
@@ -144,7 +144,7 @@ deviceTypeRouter.delete('/:id', function (req, res) {
 * @apiUse deviceTypeExample
 * @apiUse deviceTypeCreated
 * @apiUse error500
-* @apiUse error204
+* @apiUse error206
 * @apiUse error400
 */
 deviceTypeRouter.put('/', function(req, res) {
@@ -170,9 +170,9 @@ deviceTypeRouter.put('/', function(req, res) {
                 });
             });
       } else {
-          res.status(204).json({
+          res.status(206).json({
               success: true,
-              status : 204,
+              status : 206,
               message : "Object not found"
           });
       }

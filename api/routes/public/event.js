@@ -26,9 +26,9 @@ eventRouter.get('/:id?', function(req, res) {
             datas : event
           });
         }else{
-          res.status(204).json({
+          res.status(206).json({
               success : true,
-              status : 204,
+              status : 206,
               message : "Object not found"
           }).end();
         }
@@ -49,7 +49,7 @@ eventRouter.get('/:id?', function(req, res) {
 * @apiUse eventExample
 * @apiUse eventCreated
 * @apiUse error500
-* @apiUse error204
+* @apiUse error206
 * @apiUse error400
 */
 eventRouter.post('/', function(req, res) {
@@ -95,7 +95,7 @@ eventRouter.post('/', function(req, res) {
 *       "message": "Event deleted"
 *     }
 * @apiUse error500
-* @apiUse error204
+* @apiUse error206
 * @apiUse error400
 */
 eventRouter.delete('/:id', function (req, res) {

@@ -27,9 +27,9 @@ doorRouter.get('/:id?', function(req, res) {
                 datas : door
             });
         }else{
-            res.status(204).json({
+            res.status(206).json({
                 success : true,
-                status : 204,
+                status : 206,
                 message : "Object not found"
             }).end();
         }
@@ -50,7 +50,7 @@ doorRouter.get('/:id?', function(req, res) {
 * @apiUse doorExample
 * @apiUse doorCreated
 * @apiUse error500
-* @apiUse error204
+* @apiUse error206
 * @apiUse error400
 */
 doorRouter.post('/', function(req, res) {
@@ -107,7 +107,7 @@ doorRouter.post('/', function(req, res) {
 *       "message": "Door deleted"
 *     }
 * @apiUse error500
-* @apiUse error204
+* @apiUse error206
 * @apiUse error400
 */
 doorRouter.delete('/:id', function (req, res) {
@@ -137,9 +137,9 @@ doorRouter.delete('/:id', function (req, res) {
                 });
             })
         } else {
-            res.status(204).json({
+            res.status(206).json({
                 success : true,
-                status : 204,
+                status : 206,
                 message : "Object not found"
             });
         }

@@ -18,9 +18,9 @@ wallRouter.get('/:id?', function(req, res){
                     datas: wall
                 });
             }else{
-                res.status(204).json({
+                res.status(206).json({
                     success : true,
-                    status: 204,
+                    status: 206,
                     message: "Object not found"
                 }).end();
                 return;
@@ -90,9 +90,9 @@ wallRouter.delete('/:name', function(req, res){
                     });
                 });
             }else{
-                res.status(204).json({
+                res.status(206).json({
                     success: true,
-                    status: 204,
+                    status: 206,
                     message: "Object not found"
                 });
             }
@@ -134,9 +134,9 @@ wallRouter.put('/', function(req, res){
                         });
                     });
             }else{
-                res.status(204).json({
+                res.status(206).json({
                     success: true,
-                    status : 204,
+                    status : 206,
                     message: "Object not found"
                 }).end();
                 return;

@@ -17,9 +17,9 @@ stateRouter.get('/:id?', function(req,res){
                 datas: state
             });
         }else{
-            res.status(204).json({
+            res.status(206).json({
                 success : true,
-                status : 204,
+                status : 206,
                 message : "Object not found"
             }).end();
             return;

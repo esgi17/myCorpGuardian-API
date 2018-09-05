@@ -25,9 +25,9 @@ captorRouter.get('/:id?', function(req, res) {
               datas : captor
           });
         }else{
-          res.status(204).json({
+          res.status(206).json({
               success : true,
-              status : 204,
+              status : 206,
               message : "Object not found"
           }).end();
         }
@@ -48,7 +48,7 @@ captorRouter.get('/:id?', function(req, res) {
 * @apiUse captorExample
 * @apiUse captorCreated
 * @apiUse error500
-* @apiUse error204
+* @apiUse error206
 * @apiUse error400
 */
 captorRouter.post('/', function(req, res) {
@@ -97,7 +97,7 @@ captorRouter.post('/', function(req, res) {
 *       "message": "Captor deleted"
 *     }
 * @apiUse error500
-* @apiUse error204
+* @apiUse error206
 * @apiUse error400
 */
 captorRouter.delete('/:id', function (req, res) {
@@ -127,9 +127,9 @@ captorRouter.delete('/:id', function (req, res) {
         });
       })
     } else {
-        res.status(204).json({
+        res.status(206).json({
             success : true,
-            status : 204,
+            status : 206,
             message : "Object not found"
         }).end();
     }

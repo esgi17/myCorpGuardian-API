@@ -18,9 +18,9 @@ pluginAssociationRouter.get('/:id?', function(req, res){
                     datas : plugin
                 });
             }else{
-                res.status(204).json({
+                res.status(206).json({
                     success : true,
-                    status : 204,
+                    status : 206,
                     message : "Object not found"
                 }).end();
             }
@@ -69,9 +69,9 @@ pluginAssociationRouter.put('/:id?', function(req,res){
                         }).end();
                     });
             }else{
-                res.status(204).json({
+                res.status(206).json({
                     success: true,
-                    status: 204,
+                    status: 206,
                     message : "Object not foud"
                 });
             }
@@ -138,9 +138,9 @@ pluginAssociationRouter.delete('/:id', function(req, res){
                         })
                     })
             }else{
-                res.status(204).json({
+                res.status(206).json({
                     success : true,
-                    status : 204,
+                    status : 206,
                     message : "Object not found"
                 });
             }
