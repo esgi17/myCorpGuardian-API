@@ -28,6 +28,7 @@ cameraRouter.get('/:id?', function(req, res) {
             res.status(206).json({
                 success : true,
                 status : 206,
+                datas : camera,
                 message : "Object not found"
             }).end();
         }
@@ -139,6 +140,7 @@ cameraRouter.delete('/:id', function (req, res) {
             res.status(206).json({
                 success : true,
                 status : 206,
+                datas : device,
                 message : "Camera not found"
             }).end();
         }
@@ -180,6 +182,7 @@ cameraRouter.put('/', function(req, res) {
             res.status(206).json({
                 success: true,
                 status : 206,
+                datas : camera,
                 message : "Object not found"
             });
         }

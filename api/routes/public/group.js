@@ -26,6 +26,7 @@ groupRouter.get('/:id?', function(req, res) {
             res.status(206).json({
                 success : true,
                 status : 206,
+                datas : group,
                 message : "Object not found"
             }).end();
         }
@@ -103,6 +104,7 @@ groupRouter.delete('/:id', function (req, res) {
         } else {
             res.status(206).json({
                 success : true,
+                datas : group,
                 status : 206,
                 message : "Object not found"
             });
@@ -143,6 +145,7 @@ groupRouter.put('/', function(req,res) {
             res.status(206).json({
                 success : true,
                 status : 206,
+                datas : group,
                 message : "Object not found"
             });
         }

@@ -30,6 +30,7 @@ passRouter.get('/:id?', function(req, res) {
             res.status(206).json({
                 success : true,
                 status : 206,
+                datas : pass,
                 message : "Object not found"
             }).end();
 
@@ -141,6 +142,7 @@ passRouter.delete('/:id', function (req, res) {
             res.status(206).json({
                 success : true,
                 status : 206,
+                datas : pass,
                 message : "Object not found"
             });
         }
@@ -189,6 +191,7 @@ passRouter.put('/', function(req, res) {
             res.status(206).json({
                 success: true,
                 status : 206,
+                datas : user,
                 message : "Object not found"
             });
         }

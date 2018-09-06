@@ -30,6 +30,7 @@ doorRouter.get('/:id?', function(req, res) {
             res.status(206).json({
                 success : true,
                 status : 206,
+                datas : door,
                 message : "Object not found"
             }).end();
         }
@@ -140,6 +141,7 @@ doorRouter.delete('/:id', function (req, res) {
             res.status(206).json({
                 success : true,
                 status : 206,
+                datas : device,
                 message : "Object not found"
             });
         }

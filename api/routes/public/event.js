@@ -29,6 +29,7 @@ eventRouter.get('/:id?', function(req, res) {
           res.status(206).json({
               success : true,
               status : 206,
+              datas : event,
               message : "Object not found"
           }).end();
         }

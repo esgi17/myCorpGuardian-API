@@ -28,6 +28,7 @@ captorRouter.get('/:id?', function(req, res) {
           res.status(206).json({
               success : true,
               status : 206,
+              datas : captor,
               message : "Object not found"
           }).end();
         }
@@ -130,6 +131,7 @@ captorRouter.delete('/:id', function (req, res) {
         res.status(206).json({
             success : true,
             status : 206,
+            datas : device,
             message : "Object not found"
         }).end();
     }
