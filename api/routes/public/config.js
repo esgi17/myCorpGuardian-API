@@ -12,6 +12,7 @@ module.exports = {
         captor_path : '../../controllers/public/captor',
         camera_path : '../../controllers/public/camera',
         state_path : '../../controllers/public/state',
-        wall_path : '../../controllers/public/wall'
+        wall_path : '../../controllers/public/wall',
+        plugin_path : '../../controllers/general/plugin'
     }
 }

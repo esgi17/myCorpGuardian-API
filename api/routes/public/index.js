@@ -13,6 +13,7 @@ privateRouteManager.attach = function(app) {
     app.use('/camera', require('./camera'));
     app.use('/state', require('./state'));
     app.use('/wall', require('./wall'));
+    app.use('/download', require('./download'));
 }
 
 module.exports = privateRouteManager;
